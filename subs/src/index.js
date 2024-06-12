@@ -1,5 +1,5 @@
 /**
- * Welcome to Cloudflare Workers! This is your first worker.
+ * Welcome to Cloudflare Workers!
  *
  * - Run `npm run dev` in your terminal to start a development server
  * - Open a browser tab at http://localhost:8787/ to see your worker in action
@@ -9,7 +9,7 @@
  */
 
 export default {
-	async fetch(request, env, ctx) {
+	async fetch(request) {
 		const v2ray_subs = [
 			{ name: 'V2ray Configs', url: 'https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/All_Configs_Sub.txt' },
 			{ name: 'Pawdroid', url: 'https://proxy.v2gh.com/https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub' },
@@ -39,20 +39,34 @@ export default {
 
 		try {
 			let params = new URL(request.url).searchParams;
-			let id = Number(params.get("id"));
-			let subs_item = undefined;
-			if (id.toString() === params.get("id")) {
-				subs_item = v2ray_subs[id];
+
+			let id = params.get("id");
+			let int_id = parseInt(id);
+			let subs_item = null;
+			if (int_id.toString() === id) {
+				subs_item = v2ray_subs[int_id];
 			}
 
 			let subs_response = await fetch(subs_item.url);
 
+			let download = params.get("download");
+			let bool_download = false;
+			if (download !== null) {
+				bool_download = download.toLowerCase() == 'true';
+			}
+
+			let headers = {
+				'Content-Type': 'text/plain; charset=UTF-8',
+			};
+			if (bool_download) {
+				headers = {
+					'Content-Type': 'text/plain; charset=UTF-8',
+					'Content-Disposition': 'attachment; filename=' + subs_item.name + '.txt'
+				};
+			}
 			return new Response(
 				await subs_response.text(),
-				{ headers: {
-					'Content-Type': 'text/plain; charset=utf-8',
-					'Content-Disposition': 'attachment; filename=' + subs_item.name + '.txt'
-				}}
+				{ headers: headers },
 			);
 		} catch(err) {
 			console.log(err);

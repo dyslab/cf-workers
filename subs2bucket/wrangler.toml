@@ -1,8 +1,18 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "subs"
+name = "subs2bucket"
 main = "src/index.js"
-compatibility_date = "2024-06-08"
-compatibility_flags = ["nodejs_compat"]
+compatibility_date = "2024-06-05"
+
+# Cron Triggers
+# Docs: https://developers.cloudflare.com/workers/platform/triggers/cron-triggers/
+# Configuration: https://developers.cloudflare.com/workers/wrangler/configuration/#triggers
+# Schedule cron triggers:
+# - At every 3rd minute
+# - At 3PM on first day of the month
+# - At 11:59PM on the last weekday of the month
+# crons = [ "*/3 * * * *", "0 15 1 * *", "59 23 LW * *" ]
+[triggers]
+crons = ["0 */6 * * *"] # run every 6 hours (daily)
 
 # Automatically place your workloads in an optimal location to minimize latency.
 # If you are running back-end logic in a Worker, running it closer to your back-end infrastructure
@@ -16,8 +26,14 @@ compatibility_flags = ["nodejs_compat"]
 # - https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
 # Note: Use secrets to store sensitive data.
 # - https://developers.cloudflare.com/workers/configuration/secrets/
-# [vars]
-# MY_VARIABLE = "production_value"
+[vars]
+SUBS_URL = [ 
+    "https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/All_Configs_Sub.txt",
+    "https://proxy.v2gh.com/https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub",
+    "https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/merged.txt"
+]
+TASK_INDEX = 1
+TASK_LOG = "initialized log message."
 
 # Bind the Workers AI model catalog. Run machine learning models, powered by serverless GPUs, on Cloudflare’s global network
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#workers-ai
@@ -91,15 +107,15 @@ compatibility_flags = ["nodejs_compat"]
 
 # Bind an R2 Bucket. Use R2 to store arbitrarily large blobs of data, such as files.
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#r2-buckets
-# [[r2_buckets]]
-# binding = "DEST_BUCKET"
-# bucket_name = "tempfiles"
+[[r2_buckets]]
+binding = "DEST_BUCKET"
+bucket_name = "tempfiles"
 
 # Bind another Worker service. Use this binding to call another Worker without network overhead.
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
 # [[services]]
-# binding = "MY_SERVICE"
-# service = "my-service"
+# binding = "SUBS_SERVICE"
+# service = "subs"
 
 # Bind a Vectorize index. Use to store and query vector embeddings for semantic search, classification and other vector search use-cases.
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#vectorize-indexes

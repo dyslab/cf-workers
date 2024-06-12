@@ -1,0 +1,14 @@
+name = "text2image"
+main = "src/index.js"
+compatibility_date = "2024-06-08"
+workers_dev = true
+
+[vars]
+ALLOW_KEYS = "wwii.site; zhdys@gmx.com"
+
+[ai]
+binding = "AI"
+
+[[r2_buckets]]
+binding = "DEST_BUCKET"
+bucket_name = "tempfiles"

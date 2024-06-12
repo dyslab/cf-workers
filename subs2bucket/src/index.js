@@ -1,0 +1,56 @@
+/**
+ * Welcome to Cloudflare Workers!
+ *
+ * This is a template for a Scheduled Worker: a Worker that can run on a
+ * configurable interval:
+ * https://developers.cloudflare.com/workers/platform/triggers/cron-triggers/
+ *
+ * - Run `npm run dev` in your terminal to start a development server
+ * - Run `curl "http://localhost:8787/__scheduled?cron=*+*+*+*+*"` to see your worker in action
+ * - Run `npm run deploy` to publish your worker
+ *
+ * Learn more at https://developers.cloudflare.com/workers/
+ */
+
+export default {
+	async fetch(req, env) {
+		const url = new URL(req.url)
+		url.pathname = "/__scheduled";
+		url.searchParams.append("cron", "* */24 * * *");
+		return new Response(`To test the scheduled handler, ensure you have used the "--test-scheduled" then try running "curl ${url.href}".`);
+	},
+
+	// The scheduled handler is invoked at the interval set in our wrangler.toml's
+	// [[triggers]] configuration.
+	async scheduled(event, env) {
+		let subs_url = env.SUBS_URL;
+		let task_index = parseInt(env.TASK_INDEX);
+		console.log(task_index);
+
+		if (task_index >=0 && task_index < subs_url.length) {
+			let s_time = new Date(event.scheduledTime);
+			let resp = await fetch(subs_url[task_index]);
+			env.TASK_LOG = `Last trigger fired at Index ${task_index}, ` +
+				`Time: ${s_time}, Cron Pattern: "${event.cron}", ` +
+				`Response: ${resp.ok ? 'OK' : 'ERROR'}`;
+			console.log(env.TASK_LOG);
+
+			let r2_obj = null;
+			let file_key = `SUBS_URL_${task_index}.txt`;
+			if (resp.ok) {
+				r2_obj = await env.DEST_BUCKET.put(file_key, await resp.text());
+				if (r2_obj !== null) {
+					env.TASK_LOG += ` File Key: ${r2_obj.key} Size: ${r2_obj.size}`;
+					console.log(env.TASK_LOG);
+				}
+			}
+
+			task_index ++;
+			if (task_index >= subs_url.length) task_index = 0;
+		} else {
+			task_index = 0;
+		}
+
+		env.TASK_INDEX = task_index;
+	},
+};
