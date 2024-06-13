@@ -16,7 +16,7 @@ export default {
 	async fetch(req, env) {
 		const url = new URL(req.url)
 		url.pathname = "/__scheduled";
-		url.searchParams.append("cron", "* */24 * * *");
+		url.searchParams.append("cron", "* * * * *");
 		return new Response(`To test the scheduled handler, ensure you have used the "--test-scheduled" then try running "curl ${url.href}".`);
 	},
 
@@ -24,24 +24,22 @@ export default {
 	// [[triggers]] configuration.
 	async scheduled(event, env) {
 		let subs_url = env.SUBS_URL;
-		let task_index = parseInt(env.TASK_INDEX);
+		let task_index = parseInt(await env.SUBS2BUCKET_KV.get('task_index'));
 		console.log(task_index);
 
-		if (task_index >=0 && task_index < subs_url.length) {
+		if (task_index !== null && task_index >=0 && task_index < subs_url.length) {
 			let s_time = new Date(event.scheduledTime);
 			let resp = await fetch(subs_url[task_index]);
-			env.TASK_LOG = `Last trigger fired at Index ${task_index}, ` +
-				`Time: ${s_time}, Cron Pattern: "${event.cron}", ` +
-				`Response: ${resp.ok ? 'OK' : 'ERROR'}`;
-			console.log(env.TASK_LOG);
 
 			let r2_obj = null;
-			let file_key = `SUBS_URL_${task_index}.txt`;
+			let file_key = `subs_url_${task_index}.txt`;
 			if (resp.ok) {
 				r2_obj = await env.DEST_BUCKET.put(file_key, await resp.text());
 				if (r2_obj !== null) {
-					env.TASK_LOG += ` File Key: ${r2_obj.key} Size: ${r2_obj.size}`;
-					console.log(env.TASK_LOG);
+					await env.SUBS2BUCKET_KV.put(
+						file_key,
+						`Last updated at ${s_time}, size: ${r2_obj.size} bytes.`
+					);
 				}
 			}
 
@@ -50,7 +48,6 @@ export default {
 		} else {
 			task_index = 0;
 		}
-
-		env.TASK_INDEX = task_index;
+		await env.SUBS2BUCKET_KV.put('task_index', task_index);
 	},
 };

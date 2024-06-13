@@ -4,7 +4,7 @@ compatibility_date = "2024-06-08"
 workers_dev = true
 
 [vars]
-ALLOW_KEYS = "wwii.site; zhdys@gmx.com"
+ALLOW_KEYS = [ "wwii.site", "dyslab" ]
 
 [ai]
 binding = "AI"
