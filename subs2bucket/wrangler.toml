@@ -29,8 +29,10 @@ crons = ["0 */6 * * *"] # run every 6 hours (daily)
 [vars]
 SUBS_URL = [ 
     "https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/All_Configs_Sub.txt",
-    "https://proxy.v2gh.com/https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub",
-    "https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/merged.txt"
+    "https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub",
+    "https://cdn.jsdelivr.us/gh/chengaopan/AutoMergePublicNodes@master/list.txt",
+    "https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge_base64.txt",
+    "https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/merged.txt"
 ]
 
 # Bind the Workers AI model catalog. Run machine learning models, powered by serverless GPUs, on Cloudflare’s global network

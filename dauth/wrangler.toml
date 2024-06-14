@@ -1,0 +1,8 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "dauth"
+main = "src/index.js"
+compatibility_date = "2024-06-10"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+ALLOW_KEYS = [ "wwii.site", "dyslab" ]
