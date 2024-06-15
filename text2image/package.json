@@ -10,6 +10,6 @@
     "version:patch": "npm version patch --no-commit-hooks --no-git-tag-version"
   },
   "devDependencies": {
-    "wrangler": "^3.0.0"
+    "wrangler": "^3.60.3"
   }
 }

@@ -19,7 +19,7 @@ export default {
 					}
 				}
 			}
-
+			console.log(par);
 			if (Object.keys(par).indexOf('key') >=0) {
 				for (const key of allow_keys) {
 					if (par['key'].indexOf(key) >= 0) {
@@ -29,16 +29,19 @@ export default {
 					}
 				}
 			}
-	
-			return new Response.json({
+			console.log(return_flag);
+			return Response.json({
 				statusCode: 200,
-				authorized: return_flag
+				authorized: return_flag,
+				requestData: par,
 			});	
 		} catch(err) {
-			console.log(err)
-			return new Response.json({
+			console.log(err);
+			console.log(return_flag);
+			return Response.json({
 				statusCode: 401,
-				authorized: false
+				authorized: false,
+				requestData: par,
 			});
 		}
 	},
