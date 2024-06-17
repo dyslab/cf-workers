@@ -32,7 +32,8 @@ SUBS_URL = [
     "https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub",
     "https://cdn.jsdelivr.us/gh/chengaopan/AutoMergePublicNodes@master/list.txt",
     "https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge_base64.txt",
-    "https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/merged.txt"
+    "https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/merged.txt",
+    "https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/clash.yml",
 ]
 
 # Bind the Workers AI model catalog. Run machine learning models, powered by serverless GPUs, on Cloudflare’s global network

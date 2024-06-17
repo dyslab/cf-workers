@@ -28,13 +28,18 @@ export default {
 		console.log(task_index);
 
 		if (task_index !== null && task_index >=0 && task_index < subs_url.length) {
-			let s_time = new Date(event.scheduledTime);
+			let s_time = new Date(event.scheduledTime).toLocaleString();
 			let resp = await fetch(subs_url[task_index]);
-
-			let r2_obj = null;
-			let file_key = `subs_url_${task_index}.txt`;
 			if (resp.ok) {
-				r2_obj = await env.DEST_BUCKET.put(file_key, await resp.text());
+				let file_ext = '.txt';
+				const check_sub_url = subs_url[task_index].toLowerCase();
+				if (check_sub_url.endsWith('.yml')) {
+					file_ext = '.yml';
+				} else if (check_sub_url.endsWith('.yaml')) {
+					file_ext = '.yaml';
+				}
+				let file_key = `subs_url_${task_index}${file_ext}`;
+				let r2_obj = await env.DEST_BUCKET.put(file_key, await resp.text());
 				if (r2_obj !== null) {
 					await env.SUBS2BUCKET_KV.put(
 						file_key,
@@ -42,7 +47,6 @@ export default {
 					);
 				}
 			}
-
 			task_index ++;
 			if (task_index >= subs_url.length) task_index = 0;
 		} else {
