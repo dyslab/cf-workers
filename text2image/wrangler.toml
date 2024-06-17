@@ -1,3 +1,4 @@
+# TOML syntax cheatsheet: https://quickref.me/toml.html
 name = "text2image"
 main = "src/index.js"
 compatibility_date = "2024-06-08"
@@ -5,6 +6,11 @@ workers_dev = true
 
 [placement]
 mode = "smart"
+
+[vars]
+# Key 'OUTPUT_IMAGE_TO' optional values: [ 'response', 'bucket' ]
+OUTPUT_IMAGE_TO = 'bucket'
+PUBLIC_BUCKET_URL = 'https://pub-53c764ef59cf4a96b33ff4acec6e5b18.r2.dev/'
 
 [ai]
 binding = "AI"

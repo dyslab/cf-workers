@@ -41,12 +41,23 @@ var template_default = {
             "@cf/stabilityai/stable-diffusion-xl-base-1.0",
             inputs
           );
-          const file_key = `text2image_${new Date(Date.now()).toISOString()}.png`;
-          const pngFile = await env.DEST_BUCKET.put(file_key, ai_resp.body);
-          if (pngFile !== null) {
-            console.log(pngFile.httpMetadata);
-            response_json.imageUrl = pngFile.httpMetadata;
-            response_json.message += ` Image saved to ${file_key}.`;  
+          const image_resp = new Response(ai_resp, {
+            headers: {
+              "content-type": "image/png",
+              'Access-Control-Allow-Origin': '*',
+            }
+          });
+          if (env.OUTPUT_IMAGE_TO === 'response') {
+            // Response as a png file.
+            return image_resp;
+          } else if (env.OUTPUT_IMAGE_TO === 'bucket') {
+            // Response json and save to bucket as a png file.
+            const file_key = `text2image_${new Date(Date.now()).toISOString()}.png`;
+            const pngFile = await env.DEST_BUCKET.put(file_key, await image_resp.blob());
+            if (pngFile !== null) {
+              response_json.imageUrl = `${env.PUBLIC_BUCKET_URL}${file_key}`;
+              response_json.message += ` Image saved to ${file_key}.`;  
+            }  
           }
         } catch(err) {
           console.log(err);
@@ -54,14 +65,6 @@ var template_default = {
         }
         return setResponseJson(response_json);
       }
-      /* 
-      // Response as a png file.
-      return new Response(ai_resp, {
-        headers: {
-          "content-type": "image/png"
-        }
-      });
-      */
     } else {
       console.log(`App unauthorized. Request Data: ${JSON.stringify(request_data)}`);
       response_json.statusCode = 401;
