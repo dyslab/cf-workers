@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 
 let key = ref('');
-let prompt = ref('white whale flying over the open wide sea');
+let prompt = ref('a robot fighting against a crowd of dragonfly');
 let submit_button_disabled = ref(false);
 let response_image = ref('image/logo.svg');
 
@@ -22,16 +22,22 @@ const postPrompt = async () => {
     );
     console.log(resp);
     if (resp.ok) {
+      let fetch_image = false;
       const resp_contentType = resp.headers.get('content-type');
       if (resp_contentType.includes('json')) {
         let resp_json = await resp.json();
         console.log(resp_json);
         if (resp_json.statusCode === 200) {
-          response_image.value = resp_json.imageUrl;
+          const fetch_image_request = new Request(resp_json.imageUrl);
+          resp = await fetch(fetch_image_request);
+          fetch_image = true;
         } else {
           key.value += ' ⚠️ Your key is unauthorized ⛔';
         }
       } else if (resp_contentType.includes('png')) {
+        fetch_image = true;
+      }
+      if (fetch_image) {
         console.log('PNG Image Streaming... Wait please!');
         const image_blob = await resp.blob();
         const image_URL = URL.createObjectURL(image_blob);
