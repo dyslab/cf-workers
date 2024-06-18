@@ -28,7 +28,7 @@ export default {
 		console.log(task_index);
 
 		if (task_index !== null && task_index >=0 && task_index < subs_url.length) {
-			let s_time = new Date(event.scheduledTime).toLocaleString();
+			let s_time = new Date(event.scheduledTime).toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai'});
 			let resp = await fetch(subs_url[task_index]);
 			if (resp.ok) {
 				let file_ext = '.txt';
