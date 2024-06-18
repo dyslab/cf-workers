@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 
 let key = ref('');
-let prompt = ref('a robot fighting against a crowd of dragonfly');
+let prompt = ref('a city in future world with crowdy robots on the streets');
 let submit_button_disabled = ref(false);
 let response_image = ref('image/logo.svg');
 
@@ -32,7 +32,7 @@ const postPrompt = async () => {
           resp = await fetch(fetch_image_request);
           fetch_image = true;
         } else {
-          key.value += ' ⚠️ Your key is unauthorized ⛔';
+          key.value = `⛔ Your key "${key.value}" is unauthorized ⛔`;
         }
       } else if (resp_contentType.includes('png')) {
         fetch_image = true;
@@ -49,6 +49,8 @@ const postPrompt = async () => {
     loading(false);
   } catch(err) {
     console.log(err);
+    key.value = `❎ Failed! Error caught. Message: ${err} ❎`;
+    loading(false);
   }
 }
 
@@ -62,7 +64,7 @@ const loading = (enable=false) => {
     loading_interval = setInterval(() => {
       loading_message.value = `Please wait a moment, AI Generating ${dots}`; 
       count ++;
-      if (count % 5 === 0) { dots = '.'; }
+      if (count % 10 === 0) { dots = '.'; }
       else { dots += '.'; }
     }, 500);
   } else {
