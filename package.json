@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "create-cloudflare": "^2.21.6"
+    "create-cloudflare": "^2.21.8"
   }
 }
