@@ -1,8 +1,18 @@
 <script setup>
 import { ref } from 'vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+// More icons referred to: https://fontawesome.com/search?o=r&m=free&s=regular
+import { faLightbulb, faSmile } from '@fortawesome/free-regular-svg-icons';
+
+const models = [
+  '@cf/lykon/dreamshaper-8-lcm',
+  '@cf/stabilityai/stable-diffusion-xl-base-1.0',
+  '@cf/bytedance/stable-diffusion-xl-lightning',
+];
 
 let key = ref('');
-let prompt = ref('a city in future world with crowdy robots on the streets');
+let selected_model_id = ref(models[0]);
+let prompt = ref('a city in future world with crowdy robots walking on the streets');
 let submit_button_disabled = ref(false);
 let response_image = ref('image/logo.svg');
 
@@ -11,6 +21,7 @@ const postPrompt = async () => {
   // setTimeout(() => { console.log(`${key.value} with ${prompt.value}`); loading(false); }, 5000); // For debug
   const formPrompt = new FormData();
   formPrompt.append('key', key.value);
+  formPrompt.append('model_id', selected_model_id.value);
   formPrompt.append('prompt', prompt.value);
   try {
     let resp = await fetch(
@@ -80,9 +91,43 @@ const loading = (enable=false) => {
 
 <template>
   <div class="field">
-    <label class="label">Key / Pass Code</label>
+    <label class="label">
+      Key / Pass Code
+      <a href="https://dash.cloudflare.com/" target="_blank">
+        <span class="icon-text has-text-warning">
+          <span class="icon">
+            <FontAwesomeIcon 
+            :icon="faSmile" 
+            size="lg" 
+            title="Checkout dauth env vars on Cloudflare Dashboard" />
+          </span>
+        </span>
+      </a>
+    </label>
     <div class="control">
       <input class="input" type="text" v-model="key" placeholder="Input Your Key or Pass Code">
+    </div>
+  </div>
+  <div class="field">
+    <label class="label">
+      Model ID
+      <a href="https://developers.cloudflare.com/workers-ai/models/#text-to-image" target="_blank">
+        <span class="icon-text has-text-info">
+          <span class="icon">
+            <FontAwesomeIcon 
+            :icon="faLightbulb" 
+            size="lg" 
+            title="Checkout AI Models on Cloudflare Docs" />
+          </span>
+        </span>
+      </a>
+    </label>
+    <div class="select">
+      <select v-model="selected_model_id">
+        <option v-for="(model, index) in models">
+          {{ model }}
+        </option>
+      </select>
     </div>
   </div>
   <div class="field">

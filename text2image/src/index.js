@@ -1,4 +1,3 @@
-// src/template/index.js
 var template_default = {
   async fetch(request, env) {
     console.log(`Request method: ${request.method}`);
@@ -14,31 +13,35 @@ var template_default = {
       console.log(err);
     }
 
-  const setResponseJson = async (json_data) => {
-    const resp = Response.json(json_data);
-    resp.headers.set('Access-Control-Allow-Origin', '*');
-    resp.headers.set('Access-Control-Allow-Methods', 'GET,HEAD,POST,OPTIONS');
-    resp.headers.set('Access-Control-Max-Age', '86400');
-    return resp;
-  }
+    const setResponseJson = async (json_data) => {
+      const resp = Response.json(json_data);
+      resp.headers.set('Access-Control-Allow-Origin', '*');
+      resp.headers.set('Access-Control-Allow-Methods', 'GET,HEAD,POST,OPTIONS');
+      resp.headers.set('Access-Control-Max-Age', '86400');
+      return resp;
+    }
 
-  const response_json = { 
-    statusCode: 0,
-    message: '',
-    imageUrl: '',
-  };
+    const response_json = { 
+      statusCode: 0,
+      model_id: '',
+      message: '',
+      imageUrl: '',
+    };
 
-  if (is_authorized) {
-      console.log(`App authorized. Request Data: ${JSON.stringify(request_data)}`);
-      response_json.statusCode = 200;
+    if (is_authorized) {
       response_json.message = 'Authorized.';
+      console.log(`App authorized. Request Data: ${JSON.stringify(request_data)}`);
+      let model_id = '@cf/stabilityai/stable-diffusion-xl-base-1.0';
+      if ('model_id' in request_data) {
+        model_id = request_data.model_id;
+      }
       if ('prompt' in request_data) {
         try {
           const inputs = {
             prompt: request_data.prompt
           };
           const ai_resp = await env.AI.run(
-            "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+            model_id,
             inputs
           );
           const image_resp = new Response(ai_resp, {
@@ -63,6 +66,8 @@ var template_default = {
           console.log(err);
           response_json.message += ` Though, exception caught. Error message: ${err}`;
         }
+        response_json.statusCode = 200;
+        response_json.model_id = model_id;
         return setResponseJson(response_json);
       }
     } else {
