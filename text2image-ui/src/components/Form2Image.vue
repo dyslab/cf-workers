@@ -90,63 +90,68 @@ const loading = (enable=false) => {
 </script>
 
 <template>
-  <div class="field">
-    <label class="label">
-      Key / Pass Code
-      <a href="https://dash.cloudflare.com/" target="_blank">
-        <span class="icon-text has-text-warning">
-          <span class="icon">
-            <FontAwesomeIcon 
-            :icon="faSmile" 
-            size="lg" 
-            title="Checkout dauth env vars on Cloudflare Dashboard" />
-          </span>
-        </span>
-      </a>
-    </label>
-    <div class="control">
-      <input class="input" type="text" v-model="key" placeholder="Input Your Key or Pass Code">
+  <nav class="panel is-info">
+    <p class="panel-heading">Text to Image</p>
+    <div class="p-3">
+      <div class="field">
+        <label class="label">
+          Key / Pass Code
+          <a href="https://dash.cloudflare.com/" target="_blank">
+            <span class="icon-text has-text-warning">
+              <span class="icon">
+                <FontAwesomeIcon 
+                :icon="faSmile" 
+                size="lg" 
+                title="Checkout dauth env vars on Cloudflare Dashboard" />
+              </span>
+            </span>
+          </a>
+        </label>
+        <div class="control">
+          <input class="input" type="text" v-model="key" placeholder="Input Your Key or Pass Code">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">
+          Model ID
+          <a href="https://developers.cloudflare.com/workers-ai/models/#text-to-image" target="_blank">
+            <span class="icon-text has-text-info">
+              <span class="icon">
+                <FontAwesomeIcon 
+                :icon="faLightbulb" 
+                size="lg" 
+                title="Checkout AI Models on Cloudflare Docs" />
+              </span>
+            </span>
+          </a>
+        </label>
+        <div class="select">
+          <select v-model="selected_model_id">
+            <option v-for="(model, index) in models">
+              {{ model }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Prompt</label>
+        <div class="control">
+          <textarea class="textarea" v-model="prompt" placeholder="Input Prompt Here" />
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <button class="button is-link" @click="postPrompt" :disabled="submit_button_disabled">Generate Image</button>
+        </div>
+      </div>
+      <div class="block">
+        <span>{{ loading_message }}</span>
+      </div>
+      <div class="block">
+        <img alt="Generative Image" class="output_image" :src="response_image" />
+      </div>
     </div>
-  </div>
-  <div class="field">
-    <label class="label">
-      Model ID
-      <a href="https://developers.cloudflare.com/workers-ai/models/#text-to-image" target="_blank">
-        <span class="icon-text has-text-info">
-          <span class="icon">
-            <FontAwesomeIcon 
-            :icon="faLightbulb" 
-            size="lg" 
-            title="Checkout AI Models on Cloudflare Docs" />
-          </span>
-        </span>
-      </a>
-    </label>
-    <div class="select">
-      <select v-model="selected_model_id">
-        <option v-for="(model, index) in models">
-          {{ model }}
-        </option>
-      </select>
-    </div>
-  </div>
-  <div class="field">
-    <label class="label">Prompt</label>
-    <div class="control">
-      <textarea class="textarea" v-model="prompt" placeholder="Input Prompt Here" />
-    </div>
-  </div>
-  <div class="field">
-    <div class="control">
-      <button class="button is-link" @click="postPrompt" :disabled="submit_button_disabled">Generate Image</button>
-    </div>
-  </div>
-  <div class="block">
-    <span>{{ loading_message }}</span>
-  </div>
-  <div class="block">
-    <img alt="Generative Image" class="output_image" :src="response_image" />
-  </div>
+  </nav>
 </template>
 
 <style scoped>
