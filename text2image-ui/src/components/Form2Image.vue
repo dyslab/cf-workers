@@ -24,6 +24,9 @@ const postPrompt = async () => {
   formPrompt.append('model_id', selected_model_id.value);
   formPrompt.append('prompt', prompt.value);
   try {
+    for (let kv of formPrompt.entries()) {
+      console.log(`${kv[0]}: ${kv[1]}`);
+    }
     let resp = await fetch(
       'https://text2image.zhdys.workers.dev/',
       {
