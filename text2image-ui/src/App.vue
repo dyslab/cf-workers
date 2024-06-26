@@ -2,6 +2,7 @@
 import Header from './components/Header.vue';
 import Form2Image from './components/Form2Image.vue';
 import SubsFile from './components/SubsFile.vue';
+import Footer from './components/Footer.vue'
 </script>
 
 <template>
@@ -12,6 +13,7 @@ import SubsFile from './components/SubsFile.vue';
       <div class="column is-auto"><SubsFile /></div>
     </div>
   </div>
+  <Footer />
 </template>
 
 <style scoped>

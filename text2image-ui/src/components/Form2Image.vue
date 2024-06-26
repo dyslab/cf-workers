@@ -156,6 +156,9 @@ const loading = (enable=false) => {
 
 <style scoped>
 .output_image {
-  max-width: 1280px;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  object-fit: contain;
 }
 </style>
