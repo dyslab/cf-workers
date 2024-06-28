@@ -5,6 +5,7 @@ compatibility_date = "2024-06-15"
 
 [vars]
 SUBS_FILENAME = "subs_url_{id}.{ext}"
+FILE_SIZE_LIMIT_BYTES = 5242880
 
 [[kv_namespaces]]
 binding = "SUBS2BUCKET_KV"

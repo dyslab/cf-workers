@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 // More icons referred to: https://fontawesome.com/search?o=r&m=free&s=regular
 import { faFolderOpen } from '@fortawesome/free-regular-svg-icons';
@@ -7,6 +7,7 @@ import { faFolderOpen } from '@fortawesome/free-regular-svg-icons';
 const FILE_COUNT_LIMIT = 5;
 const FILE_SIZE_LIMIT = 5 * 1024 * 1024;
 
+const upload_files = ref([])
 const upload_message = ref('');
 
 const dropFiles = (event) => {
@@ -23,31 +24,83 @@ const chooseFiles = (event) => {
 }
 
 const processFiles = (files) => {
-  let id = 1;
-  upload_message.value ='';
+  let id = 0;
+  upload_files.value.length = 0;  // Empty the array
   for(let file of files) {
-    uploadFile(file, id);
+    if (id >= FILE_COUNT_LIMIT) break;
+    if (file.size <= FILE_SIZE_LIMIT) {
+      upload_files.value.push({
+        name: file.name,
+        type: file.type,
+        size: formatFileSize(file.size),
+        status: 'uploading'
+      });
+      uploadFile(file, id);
+    } else {
+      upload_files.value.push({
+        name: file.name,
+        type: file.type,
+        size: formatFileSize(file.size),
+        status: 'ignored'
+      });
+    }
     id ++;
   }
 }
 
 const uploadFile = async (file, id) => {
-  const init_upload_msg = upload_message.value;
-  let current_file_upload_msg = `File[${id}]: ${file.name} Size: ${file.size} bytes. Uploading ...<br>`;
-  upload_message.value = init_upload_msg + current_file_upload_msg;
-  /*
+  // 创建一个新的 FormData 对象，用于存储表单数据
   const formData = new FormData();
+  formData.append('file_id', id);
   formData.append('file', file);
-  const response = await fetch('/api/upload', {
-    method: 'POST',
-    body: formData
-  });
-  const data = await response.json();
-  console.log(data);
-  */
-  current_file_upload_msg = `File[${id}]: ${file.name} Size: ${file.size} bytes. Uploaded OK!<br>`;
-  upload_message.value = init_upload_msg + current_file_upload_msg;
+  try {
+    // 使用 fetch API 发送 POST 请求到 /upload/file 路径，请求体为 formData
+    const response = await fetch('/upload/file', {
+      method: 'POST',
+      body: formData
+    });
+    if (response.ok) {
+      // 等待响应并将响应体解析为 JSON 对象
+      const data = await response.json();
+      // 将解析后的 JSON 对象打印到控制台
+      console.log(data);
+      upload_files.value[id].status = 'uploaded. [OK]';
+    } else {
+      upload_files.value[id].status = `upload failed. Get response ${response.status} (${response.statusText})`;
+    }
+  } catch (error) {
+    // 处理错误情况
+    console.error(error);
+    upload_files.value[id].status = `upload failed. Get error (${error})`;
+  }
 }
+
+/**
+ * 将文件大小格式化为可读的字符串格式
+ * @param {Number} size - 文件大小（以字节为单位）
+ * @returns {String} 格式化后的文件大小字符串
+ */
+ const formatFileSize = (size) => {
+  if (size < 1024) {
+    return `${size} bytes`;
+  } else if (size < 1024 * 1024) {
+    return `${(size / 1024).toFixed(2)} KB`;
+  } else {
+    return `${(size / (1024 * 1024)).toFixed(2)} MB`;
+  }
+};
+
+watch(upload_files.value, () => {
+  upload_message.value = '';
+  let id = 0;
+  for (let file of upload_files.value) {
+    upload_message.value += `File[${id+1}]: \
+    <span class="has-text-primary-25">${file.name}</span> \
+    <span class="is-size-7">Size: ${file.size}</span> \
+    <span class="tag is-warning">${file.status}</span><br>`;
+    id ++;
+  }
+});
 </script>
 
 <template>
