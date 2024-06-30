@@ -8,9 +8,11 @@ export async function onRequestGet(context) {
   }
   console.log(id);
   const stmt = context.env.FILES_DB.prepare('SELECT key, type, blob FROM files WHERE id=?1').bind(id);
-  const db_rows = await stmt.all();
-  console.log(db_rows);
-  if (db_rows.length === 1) {
+  const d1_result = await stmt.all();
+  const rows_count = parseInt(d1_result.meta.rows_read);
+  console.log(rows_count);
+  if (rows_count === 1) {
+    const db_rows = d1_result.result;
     // Return response with headers to download file
     return new Response(db_rows[0].blob, {
       headers: {
@@ -56,10 +58,11 @@ export async function onRequestPost(context) {
       if (new_row_info.success) {
         const rows_limit = parseInt(context.env.D1_FILES_ROWS_LIMIT);
         const stmt = context.env.FILES_DB.prepare('SELECT id FROM files ORDER BY id DESC LIMIT ?1').bind(rows_limit);
-        const db_rows = await stmt.all();
-        const rows_count = parseInt(db_rows.meta.rows_read);
+        const d1_result = await stmt.all();
+        const rows_count = parseInt(d1_result.meta.rows_read);
         console.log(rows_count);
         if (rows_count >= rows_limit) {
+          const db_rows = d1_result.result;
           const temp_id = db_rows[rows_count-1].id;
           // Delete outdated rows(files)
           const delete_rows_info = await context.env.FILES_DB.prepare('DELETE FROM files WHERE ID<?1').bind(temp_id).run();
