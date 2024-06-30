@@ -12,7 +12,7 @@ export async function onRequestGet(context) {
   const rows_count = parseInt(d1_result.meta.rows_read);
   console.log(rows_count);
   if (rows_count === 1) {
-    const db_rows = d1_result.result;
+    const db_rows = d1_result.results;
     // Return response with headers to download file
     return new Response(db_rows[0].blob, {
       headers: {
@@ -62,7 +62,7 @@ export async function onRequestPost(context) {
         const rows_count = parseInt(d1_result.meta.rows_read);
         console.log(rows_count);
         if (rows_count >= rows_limit) {
-          const db_rows = d1_result.result;
+          const db_rows = d1_result.results;
           const temp_id = db_rows[rows_count-1].id;
           // Delete outdated rows(files)
           const delete_rows_info = await context.env.FILES_DB.prepare('DELETE FROM files WHERE ID<?1').bind(temp_id).run();
