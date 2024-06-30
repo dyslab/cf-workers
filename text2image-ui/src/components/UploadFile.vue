@@ -61,12 +61,15 @@ const uploadFile = async (file, id) => {
     });
     if (response.ok) {
       // 等待响应并将响应体解析为 JSON 对象
-      const data = await response.json();
-      // 将解析后的 JSON 对象打印到控制台
-      console.log(data);
-      upload_files.value[id].status = 'uploaded. [OK]';
+      const resp_json = await response.json();
+      console.log(resp_json); // For debug
+      if (resp_json.status === 200) {
+        upload_files.value[id].status = 'file uploaded. [OK]';
+      } else {
+        upload_files.value[id].status = `file uploaded and bankend error. Get response: ${resp_json.status} (${resp_json.message})`;
+      }
     } else {
-      upload_files.value[id].status = `upload failed. Get response ${response.status} (${response.statusText})`;
+      upload_files.value[id].status = `file upload failed. Get response: ${response.status} (${response.statusText})`;
     }
   } catch (error) {
     // 处理错误情况

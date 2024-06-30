@@ -1,6 +1,6 @@
 {
   "name": "text2image-ui",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "type": "module",
   "scripts": {
@@ -20,6 +20,6 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
     "vite": "^5.1.6",
-    "wrangler": "^3.61.0"
+    "wrangler": "^3.62.0"
   }
 }
