@@ -17,7 +17,10 @@ export async function onRequest(context) {
       if (rows_count === 1) {
         const db_rows = d1_result.results;
         // Return response with headers to download file
-        return new Response(db_rows[0].blob, {
+        const output_file = new File([new Uint8Array(db_rows[0].blob)], db_rows[0].key, {
+          type: db_rows[0].type,
+        });
+        return new Response(output_file, {
           headers: {
             'Content-Type': `${db_rows[0].type}; charset=UTF-8`,
             'Content-Disposition': `attachment; filename=${db_rows[0].key}`
@@ -39,7 +42,7 @@ export async function onRequest(context) {
       const file_name = file.name;
       const file_type = file.type;
       const file_size = file.size;
-      const file_blob = await file.bytes();
+      const file_blob = await file.arrayBuffer();
       if (file_size > file_size_limit) {
         return Response.json({
           status: 400,

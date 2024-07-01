@@ -1,5 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue';
+import { formatFileSize } from './common-functions'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 // More icons referred to: https://fontawesome.com/search?o=r&m=free&s=regular
 import { faFolderOpen } from '@fortawesome/free-regular-svg-icons';
@@ -77,21 +78,6 @@ const uploadFile = async (file, id) => {
     upload_files.value[id].status = `upload failed. Get error (${error})`;
   }
 }
-
-/**
- * 将文件大小格式化为可读的字符串格式
- * @param {Number} size - 文件大小（以字节为单位）
- * @returns {String} 格式化后的文件大小字符串
- */
- const formatFileSize = (size) => {
-  if (size < 1024) {
-    return `${size} bytes`;
-  } else if (size < 1024 * 1024) {
-    return `${(size / 1024).toFixed(2)} KB`;
-  } else {
-    return `${(size / (1024 * 1024)).toFixed(2)} MB`;
-  }
-};
 
 watch(upload_files.value, () => {
   upload_message.value = '';

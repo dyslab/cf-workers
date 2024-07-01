@@ -33,7 +33,7 @@ onMounted(async () => {
 
 <template>
   <nav class="panel is-link">
-    <p class="panel-heading">Subs File Link</p>
+    <p class="panel-heading">Subs File Links</p>
     <a class="panel-block" v-for="file in files_info" :href="getSubsFileLink(file.id, file.ext)" target="_blank">
       <span class="panel-icon">
         <FontAwesomeIcon :icon="faFileLines" size="lg" v-if="file.ext.includes('txt')" />
