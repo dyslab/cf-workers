@@ -9,7 +9,7 @@ compatibility_date = "2024-06-15"
   [env.production.vars]
   D1_FILES_LIST_COUNT = "10"
   D1_FILES_ROWS_LIMIT = "50"
-  FILE_SIZE_LIMIT_BYTES = "5242880"
+  FILE_SIZE_LIMIT_BYTES = "1000000"
   SUBS_FILENAME = "subs_url_{id}.{ext}"
 
   [[env.production.kv_namespaces]]
@@ -28,7 +28,7 @@ compatibility_date = "2024-06-15"
 [vars]
 D1_FILES_LIST_COUNT = "10"
 D1_FILES_ROWS_LIMIT = "50"
-FILE_SIZE_LIMIT_BYTES = "5242880"
+FILE_SIZE_LIMIT_BYTES = "1000000"
 SUBS_FILENAME = "subs_url_{id}.{ext}"
 
 [[kv_namespaces]]

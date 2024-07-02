@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faFolderOpen } from '@fortawesome/free-regular-svg-icons';
 
 const FILE_COUNT_LIMIT = 5;
-const FILE_SIZE_LIMIT = 5 * 1024 * 1024;
+const FILE_SIZE_LIMIT = 1 * 1000 * 1000;
 
 const upload_files = ref([])
 const upload_message = ref('');
@@ -113,7 +113,7 @@ watch(upload_files.value, () => {
       </label>
     </div>
     <div class="block has-text-centered is-size-5 has-text-warning mt-3 mb-6">
-      NOTE: Each file size limits to 5MB, and quantity limits to 5 files once.
+      NOTE: Each file size limits to 1MB (D1‘s Limitation), and quantity limits to 5 files once.
     </div>
   </div>
   <div class="block my-3" v-html="upload_message" />

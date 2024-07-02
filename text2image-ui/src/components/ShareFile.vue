@@ -8,6 +8,20 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 
 let files_info = ref([]);
+/* 
+// For debug
+let files_info = ref([
+  {id:1719902927369,key:"KBANK2UPLOAD-demo.xlsx",type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",size:280729},
+  {id:1719869128921,key:"使用说明.txt",type:"text/plain",size:925},{id:1719869032040,key:"warp.zip",type:"application/zip",size:858162},
+  {id:1719868814921,key:"emoji-fixed-index.html",type:"text/html",size:357469},
+  {id:1719868814715,key:"7.1.zip",type:"application/zip",size:93057},
+  {id:1719868794134,key:"20240531010928364548_1_opvrdksh7j.jpg",type:"image/jpeg",size:131406},
+  {id:1719863692835,key:"warp-plus-GB.zip",type:"application/zip",size:311417},
+  {id:1719863688891,key:"DumpStack.log.tmp",type:"application/octet-stream",size:8192},
+  {id:1719863688888,key:".__deepin.db",type:"application/octet-stream",size:16384},
+  {id:1719863487002,key:"Wai Kru letter 2017_2.pdf",type:"application/pdf",size:635009}
+]);
+*/
 
 const getShareFileLink = (id) => {
   return `/upload/file?id=${id}`;
@@ -57,9 +71,19 @@ onMounted(async () => {
         || file.type.includes('presentation')" />
         <FontAwesomeIcon :icon="faFile" size="lg" v-else />
       </span>
-      {{ file.key }}
-      <div class="ml-3 is-size-7 has-text-grey">{{ formatFileSize(file.size) }}</div>
-      <div class="ml-3 is-size-7 has-text-grey-light">{{ formatLocaleDatetime(file.id) }}</div>
+      <div class="sf-auto-new-line">
+        {{ file.key }}
+      </div>
+      <div class="is-size-7 is-flex-shrink-0">
+        <span class="ml-1 has-text-grey">{{ formatFileSize(file.size) }}</span>
+        <span class="ml-1 has-text-grey-light">{{ formatLocaleDatetime(file.id) }}</span>
+      </div>
     </a>
   </nav>
 </template>
+
+<style scoped>
+.sf-auto-new-line {
+  word-break: break-all;
+}
+</style>
