@@ -3,6 +3,7 @@ import Header from './components/Header.vue';
 import Form2Image from './components/Form2Image.vue';
 import SubsFile from './components/SubsFile.vue';
 import ShareFile from './components/ShareFile.vue';
+import SecretLink from './components/SecretLink.vue';
 import Footer from './components/Footer.vue'
 </script>
 
@@ -14,6 +15,7 @@ import Footer from './components/Footer.vue'
       <div class="column is-auto">
         <SubsFile />
         <ShareFile />
+        <SecretLink />
       </div>
     </div>
   </div>

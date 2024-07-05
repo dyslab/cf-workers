@@ -1,7 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-// More icons referred to: https://fontawesome.com/search?o=r&m=free&s=regular
 import { faFileLines, faFileCode } from '@fortawesome/free-regular-svg-icons';
 
 const files_index = ref([

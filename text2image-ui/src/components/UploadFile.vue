@@ -2,7 +2,6 @@
 import { ref, watch } from 'vue';
 import { formatFileSize } from './common-functions'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-// More icons referred to: https://fontawesome.com/search?o=r&m=free&s=regular
 import { faFolderOpen } from '@fortawesome/free-regular-svg-icons';
 
 const FILE_COUNT_LIMIT = 5;
