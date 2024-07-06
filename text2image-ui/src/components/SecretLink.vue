@@ -18,9 +18,32 @@ const generateSecretLink = async () => {
       const timestamp = Date.now().toString();
       passcode.value = timestamp.slice(-4);
       secret.value = await digestMessage(timestamp + url.value);
-      webpage.value = `${window.location}path/${secret.value}`;
-      linkto.value = url.value;
-      // fetch ok, then ...
+      // Save to cloudflare D1 table and get JSON result
+      const formLink = new FormData();
+      formLink.append('url', url.value);
+      formLink.append('passcode', passcode.value);
+      formLink.append('secret', secret.value);
+      const init = {
+        method: "POST",
+        body: formLink,
+      };
+      const resp = await fetch('/secretlink/generate', init);
+      if (resp.ok) {
+        try {
+          const result_json = await resp.json();
+          if (result_json.status === 200) {
+            webpage.value = `${window.location}path/${secret.value}`;
+            linkto.value = url.value;
+          }
+        } catch (error) {
+          webpage.value = 'error';
+          linkto.value = error.message;
+          console.log(`Generate Secret Link Error! Error message ${error}`);
+        }
+      } else {
+        webpage.value = 'Response failed';
+        linkto.value = 'Response failed';     
+      }
     }
     response_hidden.value = false;
   } else {
@@ -83,15 +106,13 @@ const writeClipboardText = async (text) => {
           <span class="ml-3 has-text-weight-bold has-text-success">
             {{ passcode }}
           </span>
-          <span class="icon ml-3 has-text-link">
-            <a>
-              <FontAwesomeIcon 
-              :icon="faFileClipboard"
-              @click="writeClipboardText(passcode)" 
-              size="1x" 
-              title="Copy to clipboard" />
-            </a>
-          </span>
+          <a class="icon ml-3 has-text-link">
+            <FontAwesomeIcon 
+            :icon="faFileClipboard"
+            @click="writeClipboardText(passcode)" 
+            size="1x" 
+            title="Copy to clipboard" />
+          </a>
         </div>
         <div class="mt-2">
           <span>
@@ -100,36 +121,36 @@ const writeClipboardText = async (text) => {
           <span class="ml-3 has-text-weight-bold  has-text-success">
             {{ secret }}
           </span>
-          <span class="icon ml-3 has-text-link">
-            <a>
-              <FontAwesomeIcon 
-              :icon="faFileClipboard"
-              @click="writeClipboardText(secret)" 
-              size="1x" 
-              title="Copy to clipboard" />
-            </a>
-          </span>
+          <a class="icon ml-3 has-text-link">
+            <FontAwesomeIcon 
+            :icon="faFileClipboard"
+            @click="writeClipboardText(secret)" 
+            size="1x" 
+            title="Copy to clipboard" />
+          </a>
         </div>
         <div class="mt-2">
           Passcode Input Page: 
         </div>
-        <div class="ml-3 is-underlined has-text-primary sl-auto-new-line">
-          <span class="is-size-7">{{ webpage }}</span>
-          <span class="icon ml-3 has-text-link">
-            <a>
-              <FontAwesomeIcon 
-              :icon="faFileClipboard"
-              @click="writeClipboardText(webpage)" 
-              size="1x" 
-              title="Copy to clipboard" />
-            </a>
-          </span>
+        <div class="ml-3 sl-auto-new-line">
+          <a class="has-text-warning-50 is-size-7" :href="webpage" target="_blank">
+            {{ webpage }}
+          </a>
+          <a class="icon ml-3 has-text-link">
+            <FontAwesomeIcon 
+            :icon="faFileClipboard"
+            @click="writeClipboardText(webpage)" 
+            size="1x" 
+            title="Copy to clipboard" />
+          </a>
         </div>
         <div class="mt-2">
           Link To Your File / Page: 
         </div>
-        <div class="ml-3 is-size-7 is-underlined has-text-warning sl-auto-new-line">
-          <span class="is-size-7">{{ linkto }}</span>
+        <div class="ml-3 is-size-7 sl-auto-new-line">
+          <a class="has-text-success-50 is-size-7" :href="linkto" target="_blank">
+            {{ linkto }}
+          </a>
         </div>
       </div>
     </div>
