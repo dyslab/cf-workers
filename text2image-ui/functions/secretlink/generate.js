@@ -32,7 +32,7 @@ export async function onRequestPost(context) {
         const count = parseInt(await context.env.SECRETLINK_KV.get('count'));
         const auto_remove_threshold = parseInt(await context.env.SECRETLINK_KV.get('auto_remove_threshold'));
         if (count < auto_remove_threshold) {
-					await env.SUBS2BUCKET_KV.put('count', count + 1);
+					await context.env.SECRETLINK_KV.put('count', count + 1);
         } else {
           const limit = parseInt(await context.env.SECRETLINK_KV.get('limit'));
           const stmt = context.env.FILES_DB.prepare(
@@ -49,7 +49,7 @@ export async function onRequestPost(context) {
             ).bind(temp_id).run();
             console.log(delete_rows_info);
           }
-          await env.SUBS2BUCKET_KV.put('count', limit);
+          await context.env.SECRETLINK_KV.put('count', limit);
         }
       } catch(error) {
         return Response.json({
