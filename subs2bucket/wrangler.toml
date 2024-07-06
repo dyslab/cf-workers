@@ -12,7 +12,7 @@ compatibility_date = "2024-06-05"
 # - At 11:59PM on the last weekday of the month
 # crons = [ "*/3 * * * *", "0 15 1 * *", "59 23 LW * *" ]
 [triggers]
-crons = ["0 */6 * * *"] # run every 6 hours (daily)
+crons = ["11 */6 * * *"] # run every 6 hours 11mins (daily)
 
 # Automatically place your workloads in an optimal location to minimize latency.
 # If you are running back-end logic in a Worker, running it closer to your back-end infrastructure
@@ -30,9 +30,9 @@ crons = ["0 */6 * * *"] # run every 6 hours (daily)
 SUBS_URL = [ 
     "https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/All_Configs_Sub.txt",
     "https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub",
-    "https://cdn.jsdelivr.us/gh/chengaopan/AutoMergePublicNodes@master/list.txt",
+    "https://raw.githubusercontent.com/chengaopan/AutoMergePublicNodes/master/list.txt",
     "https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge_base64.txt",
-    "https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/merged.txt",
+    "https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/v2ray.txt",
     "https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/clash.yml",
 ]
 
