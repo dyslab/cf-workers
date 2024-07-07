@@ -1,20 +1,22 @@
 <script setup>
 import { ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faFileClipboard } from '@fortawesome/free-regular-svg-icons';
+import { faFileClipboard, faLightbulb } from '@fortawesome/free-regular-svg-icons';
 
 const url = ref('');
 const url_note = ref('');
 const passcode = ref('passcode');
 const secret = ref('secret');
 const webpage = ref('');
-const linkto = ref('');
+const linked = ref('');
 const response_hidden = ref(true);
 
 const generateSecretLink = async () => {
   if (verifyUrl(url.value)) {
     url_note.value = '';
-    if (linkto.value !== url.value) {
+    if (linked.value !== url.value) {
+      webpage.value = 'fetching ...';
+      linked.value = 'fetching ...';
       const timestamp = Date.now().toString();
       passcode.value = timestamp.slice(-4);
       secret.value = await digestMessage(timestamp + url.value);
@@ -33,16 +35,16 @@ const generateSecretLink = async () => {
           const result_json = await resp.json();
           if (result_json.status === 200) {
             webpage.value = `${window.location}path/${secret.value}`;
-            linkto.value = url.value;
+            linked.value = url.value;
           }
         } catch (error) {
           webpage.value = 'error';
-          linkto.value = error.message;
+          linked.value = error.message;
           console.log(`Generate Secret Link Error! Error message ${error}`);
         }
       } else {
         webpage.value = 'Response failed';
-        linkto.value = 'Response failed';     
+        linked.value = 'Response failed';     
       }
     }
     response_hidden.value = false;
@@ -75,6 +77,10 @@ const writeClipboardText = async (text) => {
   } catch (error) {
     console.error(error.message);
   }
+}
+
+const getSecretLinkExampleURL = (secret) => {
+  return `/examples/secretlink?secret=${secret}`;
 }
 </script>
 
@@ -130,27 +136,48 @@ const writeClipboardText = async (text) => {
           </a>
         </div>
         <div class="mt-2">
-          Passcode Input Page: 
+          Passcode Webpage URL: 
         </div>
         <div class="ml-3 sl-auto-new-line">
-          <a class="has-text-warning-50 is-size-7" :href="webpage" target="_blank">
-            {{ webpage }}
-          </a>
-          <a class="icon ml-3 has-text-link">
-            <FontAwesomeIcon 
-            :icon="faFileClipboard"
-            @click="writeClipboardText(webpage)" 
-            size="1x" 
-            title="Copy to clipboard" />
-          </a>
+          <div v-if="verifyUrl(webpage)">
+            <a class="has-text-success-50 is-size-7" :href="webpage" target="_blank">
+              {{ webpage }}
+            </a>
+            <a class="icon ml-3 has-text-link">
+              <FontAwesomeIcon 
+              :icon="faFileClipboard"
+              @click="writeClipboardText(webpage)" 
+              size="1x" 
+              title="Copy to clipboard" />
+            </a>
+          </div>
+          <div v-else>
+            <span class="has-text-danger is-size-7">
+              {{ webpage }}
+            </span>
+          </div>
         </div>
         <div class="mt-2">
-          Link To Your File / Page: 
+          Linked URL: 
         </div>
-        <div class="ml-3 is-size-7 sl-auto-new-line">
-          <a class="has-text-success-50 is-size-7" :href="linkto" target="_blank">
-            {{ linkto }}
+        <div class="ml-3 sl-auto-new-line">
+          <a class="has-text-success-50 is-size-7" :href="linked" target="_blank" v-if="verifyUrl(linked)">
+            {{ linked }}
           </a>
+          <span class="has-text-danger is-size-7" v-else>
+            {{ linked }}
+          </span>
+        </div>
+        <div class="mt-4 is-size-7 has-text-left">
+          <FontAwesomeIcon :icon="faLightbulb"
+            class="mr-1 has-text-warning"
+            size="1x" 
+            title="How to" /> 
+          Click 
+          <a :href="getSecretLinkExampleURL(secret)" target="examples">
+            HERE
+          </a> 
+          to see how to customize your passcode webpage.
         </div>
       </div>
     </div>

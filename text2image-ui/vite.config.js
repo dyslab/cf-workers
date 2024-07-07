@@ -18,6 +18,7 @@ export default defineConfig({
       input: {
         index: 'index.html',
         upload: 'upload.html',
+        examples_secretlink: 'examples/secretlink.html',
       }
     }
   }

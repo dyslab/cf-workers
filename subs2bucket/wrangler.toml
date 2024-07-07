@@ -12,7 +12,7 @@ compatibility_date = "2024-06-05"
 # - At 11:59PM on the last weekday of the month
 # crons = [ "*/3 * * * *", "0 15 1 * *", "59 23 LW * *" ]
 [triggers]
-crons = ["11 */6 * * *"] # run every 6 hours 11mins (daily)
+crons = ["11 */6 * * *"] # run the trigger at 11 minutes past the hour, every 6 hours
 
 # Automatically place your workloads in an optimal location to minimize latency.
 # If you are running back-end logic in a Worker, running it closer to your back-end infrastructure
