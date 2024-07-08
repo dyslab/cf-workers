@@ -34,7 +34,7 @@ const generateSecretLink = async () => {
         try {
           const result_json = await resp.json();
           if (result_json.status === 200) {
-            webpage.value = `${window.location}path/${secret.value}`;
+            webpage.value = `${window.location.origin}/secretlink/web/${secret.value}`;
             linked.value = url.value;
           }
         } catch (error) {
@@ -71,9 +71,13 @@ const digestMessage = async (text) => {
   return hashHex.slice(-16);
 }
 
-const writeClipboardText = async (text) => {
+const writeClipboardText = async (text, event) => {
   try {
     await navigator.clipboard.writeText(text);
+    event.target.parentElement.classList.add(['has-text-warning']);
+    setTimeout(() => {
+      event.target.parentElement.classList.remove(['has-text-warning']);
+    }, 1000);
   } catch (error) {
     console.error(error.message);
   }
@@ -112,10 +116,10 @@ const getSecretLinkExampleURL = (secret) => {
           <span class="ml-3 has-text-weight-bold has-text-success">
             {{ passcode }}
           </span>
-          <a class="icon ml-3 has-text-link">
+          <a class="icon ml-3">
             <FontAwesomeIcon 
             :icon="faFileClipboard"
-            @click="writeClipboardText(passcode)" 
+            @click="writeClipboardText(passcode, $event)" 
             size="1x" 
             title="Copy to clipboard" />
           </a>
@@ -127,10 +131,10 @@ const getSecretLinkExampleURL = (secret) => {
           <span class="ml-3 has-text-weight-bold  has-text-success">
             {{ secret }}
           </span>
-          <a class="icon ml-3 has-text-link">
+          <a class="icon ml-3">
             <FontAwesomeIcon 
             :icon="faFileClipboard"
-            @click="writeClipboardText(secret)" 
+            @click="writeClipboardText(secret, $event)" 
             size="1x" 
             title="Copy to clipboard" />
           </a>
@@ -143,10 +147,10 @@ const getSecretLinkExampleURL = (secret) => {
             <a class="has-text-success-50 is-size-7" :href="webpage" target="_blank">
               {{ webpage }}
             </a>
-            <a class="icon ml-3 has-text-link">
+            <a class="icon ml-3">
               <FontAwesomeIcon 
               :icon="faFileClipboard"
-              @click="writeClipboardText(webpage)" 
+              @click="writeClipboardText(webpage, $event)" 
               size="1x" 
               title="Copy to clipboard" />
             </a>

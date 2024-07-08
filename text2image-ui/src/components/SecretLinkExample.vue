@@ -8,9 +8,10 @@ const input = ref(null);
 const passcode = ref(null);
 const secret = ref(null);
 const form_content = ref(
-`<form action="/secretlink/redirect" method="post">
+`<form action="${window.location.origin}/secretlink/redirect" method="post">
   <input type="text" name="passcode" required>
   <input type="hidden" name="secret" value="GENERATED_SECRET">
+  <input type="submit" value="Unlock">
 </form>
 
 <!-- NOTE: Replace GENERATED_SECRET with real secret, such as 3c702c80ff1b567c etc. -->`
@@ -34,9 +35,13 @@ const closeWindow = () => {
   window.close();
 }
 
-const writeClipboardText = async (text) => {
+const writeClipboardText = async (text, event) => {
   try {
     await navigator.clipboard.writeText(text);
+    event.target.parentElement.classList.add(['has-text-warning']);
+    setTimeout(() => {
+      event.target.parentElement.classList.remove(['has-text-warning']);
+    }, 1000);
   } catch (error) {
     console.error(error.message);
   }
@@ -82,7 +87,7 @@ onMounted(() => {
         <a class="icon ml-3 has-text-link">
           <FontAwesomeIcon 
           :icon="faFileClipboard"
-          @click="writeClipboardText(form_content)" 
+          @click="writeClipboardText(form_content, $event)" 
           size="lg" 
           title="Copy to clipboard" />
         </a>
