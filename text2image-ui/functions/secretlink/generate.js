@@ -39,7 +39,6 @@ export async function onRequestPost(context) {
             'SELECT id FROM secretlinks ORDER BY id DESC LIMIT 1 OFFSET ?1'
           ).bind(limit - 1);
           const d1_result = await stmt.all();
-          const rows_count = parseInt(d1_result.meta.rows_read);
           if (d1_result.success) {
             const db_rows = d1_result.results;
             if (db_rows.length > 0) {
