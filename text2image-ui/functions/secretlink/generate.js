@@ -18,7 +18,7 @@ export async function onRequestPost(context) {
     if (par.url.length > 1000) {
       par.url = par.url.substring(0, 1000);
     }
-    // Insert new row(file) to D1 Table 'files'
+    // Insert new row(file) to D1 Table 'secretlinks'
     const new_row_info = await context.env.FILES_DB.prepare(
       'INSERT INTO secretlinks (id, secret, passcode, url) VALUES (?1, ?2, ?3, ?4)'
     ).bind(
@@ -43,7 +43,7 @@ export async function onRequestPost(context) {
           if (rows_count === 1) {
             const db_rows = d1_result.results;
             const temp_id = db_rows[0].id;
-            // Delete old row(file) from D1 Table 'files'
+            // Delete outdated row(file) from D1 Table 'secretlinks'
             const delete_rows_info = await context.env.FILES_DB.prepare(
               'DELETE FROM secretlinks WHERE ID<?1'
             ).bind(temp_id).run();
