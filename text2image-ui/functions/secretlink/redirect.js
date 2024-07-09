@@ -10,7 +10,7 @@ export async function onRequestPost(context) {
       }
       // Select row data by passcode and secret from D1 Table 'secretlinks'
       const stmt = context.env.FILES_DB.prepare(
-        'SELECT url FROM secretlinks WHERE passcode=?1 and secret=?2'
+        'SELECT url FROM secretlinks WHERE passcode="?1" AND secret="?2"'
       ).bind(par.passcode, par.secret);
       const d1_result = await stmt.all();
       const rows_count = parseInt(d1_result.meta.rows_read);
@@ -20,7 +20,7 @@ export async function onRequestPost(context) {
       } else {
         return Response.json({
           status: 404,
-          message: `URL not found! ${d1_result}`
+          message: `URL not found! ${JSON.stringify(d1_result)}`
         });
       }
     } catch(error) {
