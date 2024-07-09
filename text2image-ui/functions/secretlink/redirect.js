@@ -10,11 +10,10 @@ export async function onRequestPost(context) {
       }
       // Select row data by passcode and secret from D1 Table 'secretlinks'
       const stmt = context.env.FILES_DB.prepare(
-        'SELECT url FROM secretlinks WHERE passcode="?1" AND secret="?2"'
+        'SELECT url FROM secretlinks WHERE passcode = ?1 AND secret = ?2'
       ).bind(par.passcode, par.secret);
       const d1_result = await stmt.all();
-      const rows_count = parseInt(d1_result.meta.rows_read);
-      if (rows_count === 1) {
+      if (d1_result.success && d1_result.results.length > 0) {
         const url = d1_result.results[0].url;
         return Response.redirect(url, 302);
       } else {

@@ -40,14 +40,16 @@ export async function onRequestPost(context) {
           ).bind(limit - 1);
           const d1_result = await stmt.all();
           const rows_count = parseInt(d1_result.meta.rows_read);
-          if (rows_count === 1) {
+          if (d1_result.success) {
             const db_rows = d1_result.results;
-            const temp_id = db_rows[0].id;
-            // Delete outdated row(file) from D1 Table 'secretlinks'
-            const delete_rows_info = await context.env.FILES_DB.prepare(
-              'DELETE FROM secretlinks WHERE ID<?1'
-            ).bind(temp_id).run();
-            console.log(delete_rows_info);
+            if (db_rows.length > 0) {
+              const temp_id = db_rows[0].id;
+              // Delete outdated row(file) from D1 Table 'secretlinks'
+              const delete_rows_info = await context.env.FILES_DB.prepare(
+                'DELETE FROM secretlinks WHERE ID<?1'
+              ).bind(temp_id).run();
+              // console.log(delete_rows_info); // For debug
+            }
           }
           await context.env.SECRETLINK_KV.put('count', limit);
         }
