@@ -1,12 +1,17 @@
 export async function onRequestPost(context) {
   const contentType = context.request.headers.get('content-type');
   const par = {};
+  let return_message = '';
+  let return_url = new URL(context.request.url).origin;
 
   if (contentType.includes('form')) {
     try {
       const formData = await context.request.formData();
       for (const entry of formData.entries()) {
         par[entry[0]] = entry[1];
+      }
+      if (Object.keys(par).includes('secret')) {
+        return_url = `${return_url}/secretlink/web/${par.secret}`;
       }
       // Select row data by passcode and secret from D1 Table 'secretlinks'
       const stmt = context.env.FILES_DB.prepare(
@@ -17,21 +22,15 @@ export async function onRequestPost(context) {
         const url = d1_result.results[0].url;
         return Response.redirect(url, 302);
       } else {
-        return Response.json({
-          status: 404,
-          message: `URL not found! ${JSON.stringify(d1_result)}`
-        });
+        return_message = encodeURIComponent('[Invalid passcode] URL not found.');
+        return Response.redirect(`${return_url}?message=${return_message}`, 302);
       }
     } catch(error) {
-      return Response.json({
-        status: 400,
-        message: `Invalid form data! ${error}`
-      });
+      return_message = encodeURIComponent(`[Invalid form data] ${error.message}`);
+      return Response.redirect(`${return_url}?message=${return_message}`, 302);
     }
   } else {
-    return Response.json({
-      status: 400,
-      message: `Invalid Request! ${contentType}`
-    });
+    return_message = encodeURIComponent(`[Bad Request] contentType: ${contentType}`);
+    return Response.redirect(`${return_url}?message=${return_message}`, 302);
   }
 }

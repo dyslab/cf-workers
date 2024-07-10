@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faFileClipboard, faLightbulb } from '@fortawesome/free-regular-svg-icons';
+import { faFileClipboard } from '@fortawesome/free-regular-svg-icons';
 
 const url = ref('');
 const url_note = ref('');
@@ -81,10 +81,6 @@ const writeClipboardText = async (text, event) => {
   } catch (error) {
     console.error(error.message);
   }
-}
-
-const getSecretLinkExampleURL = (secret) => {
-  return `/examples/secretlink?secret=${secret}`;
 }
 </script>
 
@@ -171,17 +167,6 @@ const getSecretLinkExampleURL = (secret) => {
           <span class="has-text-danger is-size-7" v-else>
             {{ linked }}
           </span>
-        </div>
-        <div class="mt-4 is-size-7 has-text-left">
-          <FontAwesomeIcon :icon="faLightbulb"
-            class="mr-1 has-text-warning"
-            size="1x" 
-            title="How to" /> 
-          Click 
-          <a :href="getSecretLinkExampleURL(secret)" target="examples">
-            HERE
-          </a> 
-          to see how to customize your passcode webpage.
         </div>
       </div>
     </div>
