@@ -109,7 +109,7 @@ const writeClipboardText = async (text, event) => {
           <span>
             Passcode:
           </span>
-          <span class="ml-3 has-text-weight-bold has-text-success">
+          <span class="ml-3 has-text-weight-bold has-text-success-40 is-size-4">
             {{ passcode }}
           </span>
           <a class="icon ml-3">
@@ -120,6 +120,7 @@ const writeClipboardText = async (text, event) => {
             title="Copy to clipboard" />
           </a>
         </div>
+        <!--
         <div class="mt-2">
           <span>
             Secret:
@@ -135,32 +136,29 @@ const writeClipboardText = async (text, event) => {
             title="Copy to clipboard" />
           </a>
         </div>
+        -->
         <div class="mt-2">
-          Passcode Webpage URL: 
+          Unlock Webpage URL: 
+          <a class="icon ml-3">
+            <FontAwesomeIcon 
+            :icon="faFileClipboard"
+            @click="writeClipboardText(webpage, $event)" 
+            size="1x" 
+            title="Copy to clipboard" />
+          </a>
         </div>
-        <div class="ml-3 sl-auto-new-line">
-          <div v-if="verifyUrl(webpage)">
-            <a class="has-text-success-50 is-size-7" :href="webpage" target="_blank">
-              {{ webpage }}
-            </a>
-            <a class="icon ml-3">
-              <FontAwesomeIcon 
-              :icon="faFileClipboard"
-              @click="writeClipboardText(webpage, $event)" 
-              size="1x" 
-              title="Copy to clipboard" />
-            </a>
-          </div>
-          <div v-else>
-            <span class="has-text-danger is-size-7">
-              {{ webpage }}
-            </span>
-          </div>
+        <div class="ml-2 sl-auto-new-line">
+          <a class="has-text-success-50 is-size-7" :href="webpage" target="_blank" v-if="verifyUrl(webpage)">
+            {{ webpage }}
+          </a>
+          <span class="has-text-danger is-size-7" v-else>
+            {{ webpage }}
+          </span>
         </div>
         <div class="mt-2">
           Linked URL: 
         </div>
-        <div class="ml-3 sl-auto-new-line">
+        <div class="ml-2 sl-auto-new-line">
           <a class="has-text-success-50 is-size-7" :href="linked" target="_blank" v-if="verifyUrl(linked)">
             {{ linked }}
           </a>
