@@ -12,14 +12,17 @@ export async function onRequestGet(context) {
       const fileobj = await context.env.DEST_BUCKET.get(filename);
       if (fileobj === null) {
         return new Response(JSON.stringify(`File "${filename}" not found!`), { status: 404 });
+      } else {
+        return new Response(fileobj.body, {
+          headers: {
+            'Content-Type': 'text/plain; charset=UTF-8',
+            'Content-Disposition': `attachment; filename=${filename}`
+          }
+        });  
       }
+    } else {
+      return new Response(JSON.stringify(`Filename "${filename}" is invalid!`), { status: 404 });
     }
-    return new Response(fileobj.body, {
-      headers: {
-        'Content-Type': 'text/plain; charset=UTF-8',
-        'Content-Disposition': `attachment; filename=${filename}`
-      }
-    });
   } catch(err) {
     console.log(err);
     return new Response(JSON.stringify(`Error occured! Message: "${err}"`));
