@@ -25,7 +25,7 @@ onMounted(async () => {
       "content-type": "application/json;charset=UTF-8",
     },
   };
-  const resp = await fetch('/subs_list/auto', init);
+  const resp = await fetch('/subs/listauto', init);
   files_info.value = await resp.json();
 });
 </script>
