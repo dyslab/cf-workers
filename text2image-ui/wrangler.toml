@@ -12,6 +12,11 @@ compatibility_date = "2024-06-15"
   D1_FILES_ROWS_LIMIT = "50"
   FILE_SIZE_LIMIT_BYTES = "1000000"
   SUBS_FILENAME = "subs_url_{id}.{ext}"
+  SUBS_FILENAME_MANUAL = "manual/{id}.{ext}"
+  SUBS_FILES_SEARCH_PATH_PREFIX = [
+    'subs_url_',
+    'manual/'
+  ]
 
   [[env.production.kv_namespaces]]
   id = "dc85d68d4a6f4677a3fd51b6bd7ec6d0"
@@ -35,6 +40,11 @@ D1_FILES_LIST_COUNT = "10"
 D1_FILES_ROWS_LIMIT = "50"
 FILE_SIZE_LIMIT_BYTES = "1000000"
 SUBS_FILENAME = "subs_url_{id}.{ext}"
+SUBS_FILENAME_MANUAL = "manual/{id}.{ext}"
+SUBS_FILES_SEARCH_PATH_PREFIX = [
+  'subs_url_',
+  'manual/'
+]
 
 [[kv_namespaces]]
 id = "dc85d68d4a6f4677a3fd51b6bd7ec6d0"

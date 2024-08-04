@@ -1,10 +1,18 @@
 export async function onRequestGet(context) {
   try {
-    const filename = context.env.SUBS_FILENAME.replace('{id}', context.params.id).replace('{ext}', context.params.ext);
+    const req_id = Number(context.params.id);
+    let filename = null;
+    if (isNaN(req_id)) {
+      filename = context.env.SUBS_FILENAME_MANUAL.replace('{id}', context.params.id).replace('{ext}', context.params.ext);
+    } else {
+      filename = context.env.SUBS_FILENAME.replace('{id}', context.params.id).replace('{ext}', context.params.ext);
+    }
     console.log(filename);
-    const fileobj = await context.env.DEST_BUCKET.get(filename);
-    if (fileobj === null) {
-      return new Response(JSON.stringify(`File "${filename}" not found!`), { status: 404 });
+    if (filename !== null) {
+      const fileobj = await context.env.DEST_BUCKET.get(filename);
+      if (fileobj === null) {
+        return new Response(JSON.stringify(`File "${filename}" not found!`), { status: 404 });
+      }
     }
     return new Response(fileobj.body, {
       headers: {
