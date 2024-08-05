@@ -9,7 +9,7 @@ import Footer from './components/Footer.vue'
 <template>
   <div class="container px-3">
     <Header subtitle="Shared Files / Secret Link / (Auto-Updated) Subs Files" />
-    <div class="fixed-grid has-1-cols-mobile">
+    <div class="fixed-grid has-1-cols-mobile has-1-cols-tablet has-2-cols-desktop">
       <div class="grid">
         <div class="cell">
           <ShareFile />

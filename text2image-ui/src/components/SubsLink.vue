@@ -34,7 +34,7 @@ onMounted(async () => {
   <nav class="panel is-primary">
     <p class="panel-heading has-background-link-light">Subs Links</p>
     <a class="panel-block" v-for="file in files_info" :href="getSubsFileLink(file.id, file.ext)" target="_blank">
-      <span class="panel-icon image is-24x24">
+      <span class="panel-icon image is-1by1">
         <img src="/image/v2rayN.svg" v-if="file.ext.includes('txt')" />
         <img src="/image/clash.svg" v-else />
       </span>
