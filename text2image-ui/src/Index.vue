@@ -9,7 +9,7 @@ import Footer from './components/Footer.vue'
   <div class="container px-3">
     <Header subtitle="Text to Image / Subs Links" />
     <div class="columns is-desktop">
-      <div class="column is-8"><Form2Image /></div>
+      <div class="column is-7"><Form2Image /></div>
       <div class="column is-auto">
         <SubsLink />
       </div>

@@ -9,15 +9,11 @@ import Footer from './components/Footer.vue'
 <template>
   <div class="container px-3">
     <Header subtitle="Shared Files / Secret Link / (Auto-Updated) Subs Files" />
-    <div class="fixed-grid has-1-cols-mobile has-1-cols-tablet has-2-cols-desktop">
-      <div class="grid">
-        <div class="cell">
-          <ShareFile />
-        </div>
-        <div class="cell">
-          <SecretLink />
-          <SubsFile />
-        </div>
+    <div class="columns is-desktop">
+      <div class="column is-7"><ShareFile /></div>
+      <div class="column is-auto">
+        <SecretLink />
+        <SubsFile />
       </div>
     </div>
   </div>
