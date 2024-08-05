@@ -5,7 +5,7 @@ import UploadFile from './components/UploadFile.vue';
 
 <template>
   <div class="container px-3">
-    <Header />
+    <Header subtitle="Shared Files Uploading" />
     <UploadFile />
   </div>
 </template>

@@ -117,6 +117,6 @@ watch(upload_files.value, () => {
   </div>
   <div class="block my-3" v-html="upload_message" />
   <div class="my-6 block has-text-centered">
-    <a href="/">Back To Home</a>
+    <a href="javascript:history.back(-1);">Back To Previous Page</a>
   </div>
 </template>

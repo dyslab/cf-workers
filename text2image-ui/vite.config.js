@@ -17,6 +17,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         index: 'index.html',
+        share: 'share.html',
         upload: 'upload.html',
         example: 'example.html',
       }

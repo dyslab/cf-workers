@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faFileLines, faFileCode } from '@fortawesome/free-regular-svg-icons';
+import { faHandPointRight } from '@fortawesome/free-regular-svg-icons';
 
 const files_index = ref([
   { id: 0, ext: 'txt' },
@@ -31,8 +31,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <nav class="panel is-link">
-    <p class="panel-heading">Subs Files</p>
+  <nav class="panel is-primary">
+    <p class="panel-heading has-background-link-light">Subs Links</p>
     <a class="panel-block" v-for="file in files_info" :href="getSubsFileLink(file.id, file.ext)" target="_blank">
       <span class="panel-icon">
         <FontAwesomeIcon :icon="faFileLines" size="lg" v-if="file.ext.includes('txt')" />
@@ -41,5 +41,11 @@ onMounted(async () => {
       {{ file.name }}
       <div class="ml-3 is-size-7 has-text-grey">{{ file.info }}</div>
     </a>
+    <div class="panel-block">
+      <a class="control has-text-right" href="/share">
+        Go To Share Page
+        <FontAwesomeIcon :icon="faHandPointRight" size="lg" />
+      </a>
+    </div>
   </nav>
 </template>
