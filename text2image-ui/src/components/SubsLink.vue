@@ -1,16 +1,9 @@
 <script setup>
 import { onMounted, ref } from 'vue';
+import { formatFileSize } from './common-functions'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faHandPointRight } from '@fortawesome/free-regular-svg-icons';
 
-const files_index = ref([
-  { id: 0, ext: 'txt' },
-  { id: 1, ext: 'txt' },
-  { id: 2, ext: 'txt' },
-  { id: 3, ext: 'txt' },
-  { id: 4, ext: 'txt' },
-  { id: 5, ext: 'yml' },
-]);
 let files_info = ref([]);
 
 const getSubsFileLink = (id, ext) => {
@@ -18,14 +11,7 @@ const getSubsFileLink = (id, ext) => {
 }
 
 onMounted(async () => {
-  const init = {
-    body: JSON.stringify(files_index.value),
-    method: "POST",
-    headers: {
-      "content-type": "application/json;charset=UTF-8",
-    },
-  };
-  const resp = await fetch('/subs/listauto', init);
+  const resp = await fetch('/subs/listall');
   files_info.value = await resp.json();
 });
 </script>
@@ -38,8 +24,9 @@ onMounted(async () => {
         <img src="/image/v2rayN.svg" v-if="file.ext.includes('txt')" />
         <img src="/image/clash.svg" v-else />
       </span>
-      {{ file.name }}
-      <div class="ml-3 is-size-7 has-text-grey">{{ file.info }}</div>
+      {{ file.key }}
+      <div class="ml-3 is-size-7 has-text-grey-light">{{ formatFileSize(file.size) }}</div>
+      <div class="ml-3 is-size-7 has-text-grey">{{ file.datetime }}</div>
     </a>
     <div class="panel-block">
       <a class="control has-text-right" href="/share">
