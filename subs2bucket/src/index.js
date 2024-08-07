@@ -25,10 +25,10 @@ export default {
 	async scheduled(event, env) {
 		let subs_url = env.SUBS_URL;
 		let task_index = parseInt(await env.SUBS2BUCKET_KV.get('task_index'));
-		console.log(task_index);
+		// console.log(task_index); // For debug
 
 		if (task_index !== null && task_index >=0 && task_index < subs_url.length) {
-			let s_time = new Date(event.scheduledTime).toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai'});
+			let s_time = new Date(event.scheduledTime).toISOString(); // .toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai'});
 			let resp = await fetch(subs_url[task_index]);
 			if (resp.ok) {
 				let file_ext = '.txt';
@@ -43,7 +43,7 @@ export default {
 				if (r2_obj !== null) {
 					await env.SUBS2BUCKET_KV.put(
 						file_key,
-						`Last updated at ${s_time}, size: ${r2_obj.size} bytes.`
+						`Updated at ${s_time}, size: ${r2_obj.size} bytes.`
 					);
 				}
 			}
