@@ -10,6 +10,7 @@ const files_index = ref([
   { id: 3, ext: 'txt' },
   { id: 4, ext: 'txt' },
   { id: 5, ext: 'yml' },
+  { id: 6, ext: 'yml' },
 ]);
 let files_info = ref([]);
 

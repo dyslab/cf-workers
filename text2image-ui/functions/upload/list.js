@@ -16,6 +16,7 @@ export async function onRequestGet(context) {
   const resp_list = [];
   for (const item of db_rows) {
     resp_list.push({
+      id: item.id,
       key: item.key,
       type: item.type,
       size: item.size,
