@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { formatFileSize, formatLocaleDatetime } from './common-functions'
+import { formatFileSize } from './common-functions'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { 
   faCircleUp, faFilePdf, faFilePowerpoint, faFile, faFileLines, faFileImage, 
@@ -9,7 +9,7 @@ import {
 
 let files_info = ref([]);
 /* 
-// For debug
+// For debug, field value 'id' had been converted to be a 'datetime' field value at backend function '/upload/list.js'
 let files_info = ref([
   {id:1719902927369,key:"KBANK2UPLOAD-demo.xlsx",type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",size:280729},
   {id:1719869128921,key:"使用说明.txt",type:"text/plain",size:925},{id:1719869032040,key:"warp.zip",type:"application/zip",size:858162},
@@ -76,7 +76,7 @@ onMounted(async () => {
       </div>
       <div class="is-size-7 is-flex-shrink-0">
         <span class="ml-1 has-text-grey">{{ formatFileSize(file.size) }}</span>
-        <span class="ml-1 has-text-grey-light">{{ formatLocaleDatetime(file.id) }}</span>
+        <span class="ml-1 has-text-grey-light">{{ file.datetime }}</span>
       </div>
     </a>
   </nav>

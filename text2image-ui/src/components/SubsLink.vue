@@ -25,8 +25,8 @@ onMounted(async () => {
         <img src="/image/clash.svg" v-else />
       </span>
       {{ file.key }}
-      <div class="ml-3 is-size-7 has-text-grey">{{ formatFileSize(file.size) }}</div>
-      <div class="ml-3 is-size-7 has-text-grey-light">{{ file.datetime }}</div>
+      <div class="ml-2 is-size-7 has-text-grey">{{ formatFileSize(file.size) }}</div>
+      <div class="ml-2 is-size-7 has-text-grey-light">{{ file.datetime }}</div>
     </a>
     <div class="panel-block">
       <a class="control has-text-right" href="/share">
