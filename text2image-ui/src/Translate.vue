@@ -1,12 +1,12 @@
 <script setup>
 import Header from './components/Header.vue';
-import ExampleContent from './components/ExampleContent.vue';
+import TranslateText from './components/TranslateText.vue';
 </script>
 
 <template>
   <div class="container px-3">
-    <Header />
-    <ExampleContent />
+    <Header subtitle="AI Translate" />
+    <TranslateText />
   </div>
 </template>
 

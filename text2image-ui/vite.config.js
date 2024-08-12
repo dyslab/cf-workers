@@ -19,7 +19,7 @@ export default defineConfig({
         index: 'index.html',
         share: 'share.html',
         upload: 'upload.html',
-        example: 'example.html',
+        translate: 'translate.html',
       }
     }
   }

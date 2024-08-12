@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faFileClipboard } from '@fortawesome/free-regular-svg-icons';
+import CopyToClipboard from './CopyToClipboard.vue';
 
 const url = ref('');
 const url_note = ref('');
@@ -70,18 +69,6 @@ const digestMessage = async (text) => {
     .join(""); // convert bytes to hex string
   return hashHex.slice(-16);
 }
-
-const writeClipboardText = async (text, event) => {
-  try {
-    await navigator.clipboard.writeText(text);
-    event.target.parentElement.classList.add(['has-text-warning']);
-    setTimeout(() => {
-      event.target.parentElement.classList.remove(['has-text-warning']);
-    }, 1000);
-  } catch (error) {
-    console.error(error.message);
-  }
-}
 </script>
 
 <template>
@@ -112,40 +99,20 @@ const writeClipboardText = async (text, event) => {
           <span class="ml-3 has-text-weight-bold has-text-success-40 is-size-4">
             {{ passcode }}
           </span>
-          <a class="icon ml-3">
-            <FontAwesomeIcon 
-            :icon="faFileClipboard"
-            @click="writeClipboardText(passcode, $event)" 
-            size="1x" 
-            title="Copy to clipboard" />
-          </a>
+          <CopyToClipboard class="ml-3" :content="passcode" />
         </div>
-        <!--
-        <div class="mt-2">
+        <!--div class="mt-3">
           <span>
             Secret:
           </span>
           <span class="ml-3 has-text-weight-bold  has-text-success">
             {{ secret }}
           </span>
-          <a class="icon ml-3">
-            <FontAwesomeIcon 
-            :icon="faFileClipboard"
-            @click="writeClipboardText(secret, $event)" 
-            size="1x" 
-            title="Copy to clipboard" />
-          </a>
-        </div>
-        -->
-        <div class="mt-2">
+          <CopyToClipboard class="ml-3" :content="secret" />
+        </div-->
+        <div class="mt-3">
           Unlock Webpage URL: 
-          <a class="icon ml-3">
-            <FontAwesomeIcon 
-            :icon="faFileClipboard"
-            @click="writeClipboardText(webpage, $event)" 
-            size="1x" 
-            title="Copy to clipboard" />
-          </a>
+          <CopyToClipboard class="ml-3" :content="webpage" />
         </div>
         <div class="ml-2 sl-auto-new-line">
           <a class="has-text-success-50 is-size-7" :href="webpage" target="_blank" v-if="verifyUrl(webpage)">
@@ -155,7 +122,7 @@ const writeClipboardText = async (text, event) => {
             {{ webpage }}
           </span>
         </div>
-        <div class="mt-2">
+        <div class="mt-3">
           Linked URL: 
         </div>
         <div class="ml-2 sl-auto-new-line">

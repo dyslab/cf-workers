@@ -34,5 +34,11 @@ onMounted(async () => {
         <FontAwesomeIcon :icon="faHandPointRight" size="lg" />
       </a>
     </div>
+    <!--div class="panel-block">
+      <a class="control has-text-right" href="/translate">
+        Go To Translate Page
+        <FontAwesomeIcon :icon="faHandPointRight" size="lg" />
+      </a>
+    </div-->
   </nav>
 </template>
