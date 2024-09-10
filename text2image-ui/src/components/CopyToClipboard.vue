@@ -27,10 +27,9 @@ const writeClipboardText = async (text, event) => {
 </script>
 
 <template>
-  <a class="tag is-light" v-if="!isCopied">
+  <a class="tag is-light" v-if="!isCopied" @click="writeClipboardText(prop.content, $event)">
     <FontAwesomeIcon 
       :icon="faFileClipboard"
-      @click="writeClipboardText(prop.content, $event)" 
       size="lg" 
       title="Copy to clipboard"
       />
