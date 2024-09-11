@@ -17,7 +17,7 @@ const default_to_lang = ref("Chinese");
 const from_lang = ref(default_from_lang.value);
 const to_lang = ref(default_to_lang.value);
 const text_rows = ref(10);
-const form_content = ref(
+const from_content = ref(
 `Thrilled to announce that I've been accepted into one of the top 10 universities in the QS rankings! 🌟📚 Feeling so grateful for this incredible opportunity and excited for all the amazing experiences that lie ahead. Thank you to everyone who has supported me along this journey. Here's to new beginnings and endless possibilities! #blessed #top10university #futureleader 🎓🌟`
 );
 
@@ -34,12 +34,12 @@ const to_content = ref(
 );
 
 const translateAction = async () => {
-  if (form_content.value.trim() === "") return;
+  if (from_content.value.trim() === "") return;
 
   const body = {
     from: from_lang.value,
     to: to_lang.value,
-    form_content: form_content.value,
+    from_content: from_content.value,
   };
   const init = {
     body: JSON.stringify(body),
@@ -50,11 +50,9 @@ const translateAction = async () => {
   };
   try {
     const resp = await fetch('/translate/m2m100', init);
-    console.log(resp);
     const contentType = resp.headers.get("content-type") || "";
     if (contentType.includes("application/json")) {
       const respJson = await resp.json();
-      console.log(respJson);
       to_content.value = respJson.to_content;
     }
   } catch(err) {
@@ -63,7 +61,7 @@ const translateAction = async () => {
 }
 
 /*
-watch(form_content, (val) => {
+watch(from_content, (val) => {
   if (typeof browser !== 'undefined') {
     browser.i18n.detectLanguage(val).then((langInfo) => {
       for (const lang of langInfo.languages) {
@@ -108,10 +106,10 @@ watch(form_content, (val) => {
         class="textarea is-info" 
         placeholder="text here"
         :rows="text_rows" 
-        v-model="form_content" 
+        v-model="from_content" 
         />
         <!--p>Auto-detect: Chinese</p-->
-        <!--pre class="has-text-light has-background-dark">{{ form_content }}</pre-->
+        <!--pre class="has-text-light has-background-dark">{{ from_content }}</pre-->
       </article>
     </div>
     <div class="column is-half">
