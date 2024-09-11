@@ -49,11 +49,13 @@ const translateAction = async () => {
     },
   };
   try {
-    const response = await fetch('/translate/m2m100', init);
-    const contentType = response.headers.get("content-type") || "";
+    const resp = await fetch('/translate/m2m100', init);
+    console.log(resp);
+    const contentType = resp.headers.get("content-type") || "";
     if (contentType.includes("application/json")) {
-      const response_json = await response.json();
-      to_content.value = response_json.to_content;
+      const respJson = await resp.json();
+      console.log(respJson);
+      to_content.value = respJson.to_content;
     }
   } catch(err) {
     console.log(err);
