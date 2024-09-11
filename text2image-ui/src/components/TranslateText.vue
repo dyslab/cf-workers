@@ -53,11 +53,7 @@ const translateAction = async () => {
     const contentType = response.headers.get("content-type") || "";
     if (contentType.includes("application/json")) {
       const response_json = await response.json();
-      if (response_json.includes('to_content')) {
-        to_content.value = response_json.to_content;
-      } else {
-        console.log(`JSON key 'to_content' does not exist!`);
-      }
+      to_content.value = response_json.to_content;
     }
   } catch(err) {
     console.log(err);
