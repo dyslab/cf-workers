@@ -9,6 +9,7 @@ const langs = ref([
   "English",
   "French",
   "German",
+  "Italian",
   "Japanese",
   "Spanish",
 ]);
@@ -22,15 +23,7 @@ const from_content = ref(
 );
 
 const to_content = ref(
-`This is 'To' area.
-
-<form action="${window.location.origin}/secretlink/redirect" method="post">
-  <input type="text" name="passcode" required>
-  <input type="hidden" name="secret" value="GENERATED_SECRET">
-  <input type="submit" value="Unlock">
-</form>
-
-<!-- NOTE: Replace GENERATED_SECRET with real secret, such as 3c702c80ff1b567c etc. -->`
+`This is 'To' area. window.location.origin=${window.location.origin}`
 );
 
 const translateAction = async () => {

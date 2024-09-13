@@ -14,6 +14,9 @@ compatibility_date = "2024-06-15"
   SUBS_FILENAME = "subs_url_{id}.{ext}"
   SUBS_FILENAME_MANUAL = "manual/{id}.{ext}"
 
+  [env.production.ai]
+  binding = "AI"
+
   [[env.production.kv_namespaces]]
   id = "dc85d68d4a6f4677a3fd51b6bd7ec6d0"
   binding = "SUBS2BUCKET_KV"
@@ -37,6 +40,9 @@ D1_FILES_ROWS_LIMIT = "50"
 FILE_SIZE_LIMIT_BYTES = "1000000"
 SUBS_FILENAME = "subs_url_{id}.{ext}"
 SUBS_FILENAME_MANUAL = "manual/{id}.{ext}"
+
+[ai]
+binding = "AI"
 
 [[kv_namespaces]]
 id = "dc85d68d4a6f4677a3fd51b6bd7ec6d0"
