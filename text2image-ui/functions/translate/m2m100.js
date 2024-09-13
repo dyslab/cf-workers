@@ -23,8 +23,8 @@ export async function onRequestPost(context) {
       requestJson.to_content = await invokeM2M100(
         context.env.AI,
         requestJson.from_content,
-        requestJson.from_lang,
-        requestJson.to_lang
+        requestJson.from_lang.toLowerCase(),
+        requestJson.to_lang.toLowerCase()
       );
       return Response.json(requestJson);
     } else {

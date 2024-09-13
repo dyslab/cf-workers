@@ -18,16 +18,20 @@ const default_to_lang = ref("Chinese");
 const from_lang = ref(default_from_lang.value);
 const to_lang = ref(default_to_lang.value);
 const text_rows = ref(10);
+const is_translating = ref(false);
 const from_content = ref(
 `Thrilled to announce that I've been accepted into one of the top 10 universities in the QS rankings! 🌟📚 Feeling so grateful for this incredible opportunity and excited for all the amazing experiences that lie ahead. Thank you to everyone who has supported me along this journey. Here's to new beginnings and endless possibilities! #blessed #top10university #futureleader 🎓🌟`
 );
-
 const to_content = ref(
 `This is 'To' area. window.location.origin=${window.location.origin}`
 );
 
 const translateAction = async () => {
   if (from_content.value.trim() === "") return;
+  if (from_lang.value === to_lang.value) {
+    to_content.value = from_content.value;
+    return;
+  }
 
   const body = {
     from_lang: from_lang.value,
@@ -42,6 +46,7 @@ const translateAction = async () => {
     },
   };
   try {
+    is_translating.value = true;
     const resp = await fetch('/translate/m2m100', init);
     const contentType = resp.headers.get("content-type") || "";
     if (contentType.includes("application/json")) {
@@ -50,6 +55,8 @@ const translateAction = async () => {
     }
   } catch(err) {
     console.log(err);
+  } finally {
+    is_translating.value = false;
   }
 }
 
@@ -85,7 +92,7 @@ watch(from_content, (val) => {
             </div>
           </div>
           <div>
-            <a class="tag" @click="translateAction()">
+            <a class="tag" @click="translateAction()" v-if="!is_translating">
               Translate 
               <FontAwesomeIcon 
                 class="ml-2"
@@ -93,6 +100,9 @@ watch(from_content, (val) => {
                 size="lg" 
                 />
             </a>
+            <span class="tag" v-else>
+              Translating...
+            </span>
           </div>
         </div>
         <textarea 
