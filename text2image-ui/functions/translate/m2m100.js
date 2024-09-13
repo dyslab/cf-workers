@@ -1,5 +1,5 @@
 export async function onRequestPost(context) {
-  async function invokeM2M100(AI_worker, from_lang, to_lang, from_content) {
+  async function invokeM2M100(AI_worker, from_content, from_lang, to_lang) {
     const AI_resp = await AI_worker.run(
       "@cf/meta/m2m100-1.2b",
       {
@@ -22,9 +22,9 @@ export async function onRequestPost(context) {
       const requestJson = await context.request.json();
       requestJson.to_content = await invokeM2M100(
         context.env.AI,
+        requestJson.from_content,
         requestJson.from_lang,
-        requestJson.to_lang,
-        requestJson.from_content
+        requestJson.to_lang
       );
       return Response.json(requestJson);
     } else {

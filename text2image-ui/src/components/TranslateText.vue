@@ -30,8 +30,8 @@ const translateAction = async () => {
   if (from_content.value.trim() === "") return;
 
   const body = {
-    from: from_lang.value,
-    to: to_lang.value,
+    from_lang: from_lang.value,
+    to_lang: to_lang.value,
     from_content: from_content.value,
   };
   const init = {
