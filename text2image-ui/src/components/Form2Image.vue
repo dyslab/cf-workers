@@ -1,13 +1,16 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 // More icons referred to: https://fontawesome.com/search?o=r&m=free&s=regular
 import { faLightbulb, faSmile } from '@fortawesome/free-regular-svg-icons';
+import FormFieldImagePicker from './FormFieldImagePicker.vue';
 
 const models = [
   '@cf/lykon/dreamshaper-8-lcm',
   '@cf/stabilityai/stable-diffusion-xl-base-1.0',
   '@cf/bytedance/stable-diffusion-xl-lightning',
+  '@cf/runwayml/stable-diffusion-v1-5-img2img',
+  '@cf/runwayml/stable-diffusion-v1-5-inpainting',
 ];
 
 let key = ref('');
@@ -15,6 +18,9 @@ let selected_model_id = ref(models[0]);
 let prompt = ref('a city in future world with crowdy robots walking on the streets');
 let submit_button_disabled = ref(false);
 let response_image = ref('image/logo.svg');
+const show_image_input = ref(false);
+const input_image_file = ref(null);
+const mask_image_file = ref(null);
 
 const postPrompt = async () => {
   loading(true);
@@ -67,6 +73,14 @@ const postPrompt = async () => {
     loading(false);
   }
 }
+
+watch(selected_model_id, (selected_model) => {
+  if (selected_model.includes('img2img') || selected_model.includes('inpainting')) {
+    show_image_input.value = true;
+  } else {
+    show_image_input.value = false;
+  }
+});
 
 let loading_message = ref('');
 let loading_interval = 0;
@@ -136,6 +150,16 @@ const loading = (enable=false) => {
           </select>
         </div>
       </div>
+      <!-- BEGIN: only visible when show_image_input is true -->
+      <FormFieldImagePicker 
+      title="Input Image" 
+      @selectedfile="(file) => input_image_file = file" 
+      v-if="show_image_input" />
+      <FormFieldImagePicker 
+      title="Mask Image" 
+      @selectedfile="(file) => mask_image_file = file" 
+      v-if="show_image_input" />
+      <!-- END: only visible when show_image_input is true -->
       <div class="field">
         <label class="label">Prompt</label>
         <div class="control">
