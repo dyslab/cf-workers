@@ -1,9 +1,9 @@
 {
   "name": "text2image",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "private": true,
   "scripts": {
-    "deploy": "npm run version:patch && wrangler deploy",
+    "deploy": "wrangler deploy",
     "dev": "wrangler dev",
     "start": "wrangler dev",
     "version:minor": "npm version minor --no-commit-hooks --no-git-tag-version",
