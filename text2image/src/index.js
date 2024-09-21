@@ -36,6 +36,8 @@ var template_default = {
         model_id = request_data.model_id;
         delete request_data.model_id;
       }
+      if ('image' in request_data) request_data.image = JSON.parse(request_data.image);
+      if ('mask' in request_data) request_data.mask = JSON.parse(request_data.mask);
       try {
         const ai_resp = await env.AI.run(
           model_id,
