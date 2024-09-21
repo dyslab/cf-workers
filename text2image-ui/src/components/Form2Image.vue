@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 // More icons referred to: https://fontawesome.com/search?o=r&m=free&s=regular
 import { faLightbulb, faSmile } from '@fortawesome/free-regular-svg-icons';
@@ -14,21 +14,26 @@ const models = [
 ];
 
 let key = ref('');
-let selected_model_id = ref(models[0]);
+let selected_model = ref(models[0]);
 let prompt = ref('a city in future world with crowdy robots walking on the streets');
 let submit_button_disabled = ref(false);
 let response_image = ref('image/logo.svg');
-const show_image_input = ref(false);
-const input_image_file = ref(null);
-const mask_image_file = ref(null);
+const input_image_file_array_data = ref(null);
+const mask_image_file_array_data = ref(null);
 
 const postPrompt = async () => {
   loading(true);
   // setTimeout(() => { console.log(`${key.value} with ${prompt.value}`); loading(false); }, 5000); // For debug
   const formPrompt = new FormData();
   formPrompt.append('key', key.value);
-  formPrompt.append('model_id', selected_model_id.value);
+  formPrompt.append('model_id', selected_model.value);
   formPrompt.append('prompt', prompt.value);
+  if (selected_model.value.includes('img2img') || selected_model.value.includes('inpainting')) {
+    formPrompt.append('image', input_image_file_array_data.value);
+  }
+  if (selected_model.value.includes('inpainting')) {
+    formPrompt.append('mask', mask_image_file_array_data.value);
+  }
   try {
     for (let kv of formPrompt.entries()) {
       console.log(`${kv[0]}: ${kv[1]}`);
@@ -74,14 +79,6 @@ const postPrompt = async () => {
   }
 }
 
-watch(selected_model_id, (selected_model) => {
-  if (selected_model.includes('img2img') || selected_model.includes('inpainting')) {
-    show_image_input.value = true;
-  } else {
-    show_image_input.value = false;
-  }
-});
-
 let loading_message = ref('');
 let loading_interval = 0;
 const loading = (enable=false) => {
@@ -103,6 +100,24 @@ const loading = (enable=false) => {
     }
     loading_interval = 0;
   }
+}
+
+/**
+ * 
+ * @param data URL data
+ * @returns ArrayBuffer
+ * @description Convert URL data to ArrayBuffer
+ * 
+ */
+const fromUrlDataToArrayData = (data) => {
+  if (data === null) return null;
+
+  const pure_b64 = data.replace('data:', '').replace(/^.+,/, '');
+  const binary_string = atob(pure_b64);
+  // Convert a utf-8 binary string into a Uint8Array
+  const array_date = Uint8Array.from(binary_string, (char) => char.charCodeAt(0));
+
+  return array_date;
 }
 </script>
 
@@ -130,7 +145,7 @@ const loading = (enable=false) => {
       </div>
       <div class="field">
         <label class="label">
-          Model ID
+          Model
           <a href="https://developers.cloudflare.com/workers-ai/models/#text-to-image" target="_blank">
             <span class="icon-text has-text-info">
               <span class="icon">
@@ -143,23 +158,25 @@ const loading = (enable=false) => {
           </a>
         </label>
         <div class="select">
-          <select v-model="selected_model_id">
+          <select v-model="selected_model">
             <option v-for="(model, index) in models">
               {{ model }}
             </option>
           </select>
         </div>
       </div>
-      <!-- BEGIN: only visible when show_image_input is true -->
+      <!-- Show input image picker component when selected model is either 'img2img' or 'inpainting' -->
       <FormFieldImagePicker 
       title="Input Image" 
-      @selectedfile="(file) => input_image_file = file" 
-      v-if="show_image_input" />
+      @get-image-file-url-data="(data) => input_image_file_array_data = fromUrlDataToArrayData(data)" 
+      v-if="selected_model.includes('img2img') || selected_model.includes('inpainting')" 
+      />
+      <!-- Show mask image picker component when selected model is 'inpainting' -->
       <FormFieldImagePicker 
       title="Mask Image" 
-      @selectedfile="(file) => mask_image_file = file" 
-      v-if="show_image_input" />
-      <!-- END: only visible when show_image_input is true -->
+      @get-image-file-url-data="(data) => mask_image_file_array_data = fromUrlDataToArrayData(data)" 
+      v-if="selected_model.includes('inpainting')" 
+      />
       <div class="field">
         <label class="label">Prompt</label>
         <div class="control">

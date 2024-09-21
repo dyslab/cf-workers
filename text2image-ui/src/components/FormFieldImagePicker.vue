@@ -7,7 +7,7 @@ import { faSquareCaretUp } from '@fortawesome/free-regular-svg-icons';
 const props = defineProps({
   title: String
 });
-const emit = defineEmits(['selectedfile']);
+const emit = defineEmits(['get-image-file-url-data']);
 
 const accept_file_types = ref('image/png, image/jpeg');
 const image_file = ref({ name: 'No file selected',});
@@ -15,10 +15,10 @@ const image_src = ref(null);
 
 const onImageFileChange = (event) => {
   image_file.value = event.target.files[0];
-  emit('selectedfile', image_file.value);
   const reader = new FileReader();
   reader.onload = (e) => {
     image_src.value = e.target.result;
+    emit('get-image-file-url-data', image_src.value);
   }
   reader.readAsDataURL(image_file.value);
 }
