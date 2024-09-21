@@ -15,7 +15,7 @@ const models = [
 
 let key = ref('');
 let selected_model = ref(models[0]);
-let prompt = ref('a city in future world with crowdy robots walking on the streets');
+let prompt = ref('cats and dogs are dancing, detailed, 8k');
 let submit_button_disabled = ref(false);
 let response_image = ref('image/logo.svg');
 const input_image_file_array_data = ref(null);
@@ -29,10 +29,10 @@ const postPrompt = async () => {
   formPrompt.append('model_id', selected_model.value);
   formPrompt.append('prompt', prompt.value);
   if (selected_model.value.includes('img2img') || selected_model.value.includes('inpainting')) {
-    formPrompt.append('image', input_image_file_array_data.value);
+    formPrompt.append('image', JSON.stringify(input_image_file_array_data.value));
   }
   if (selected_model.value.includes('inpainting')) {
-    formPrompt.append('mask', mask_image_file_array_data.value);
+    formPrompt.append('mask', JSON.stringify(mask_image_file_array_data.value));
   }
   try {
     for (let kv of formPrompt.entries()) {
@@ -114,10 +114,9 @@ const fromUrlDataToArrayData = (data) => {
 
   const pure_b64 = data.replace('data:', '').replace(/^.+,/, '');
   const binary_string = atob(pure_b64);
-  // Convert a utf-8 binary string into a Uint8Array
-  const array_date = Uint8Array.from(binary_string, (char) => char.charCodeAt(0));
-
-  return array_date;
+  // Convert a utf-8 binary string into a array
+  const array_data = Array.from(binary_string, (char) => char.charCodeAt(0));
+  return array_data;
 }
 </script>
 
