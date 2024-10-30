@@ -7,36 +7,10 @@
  *
  * Learn more at https://developers.cloudflare.com/workers/
  */
+import { defaultResponseText, defaultResponseHTML } from './default-response.js'
 
 export default {
-	async fetch(request) {
-		const v2ray_subs = [
-			{ name: 'V2ray Configs', url: 'https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/All_Configs_Sub.txt' },
-			{ name: 'Pawdroid', url: 'https://proxy.v2gh.com/https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub' },
-			{ name: 'Pawdroid(Mirror)', url: 'https://mirror.v2gh.com/https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub' },
-			{ name: 'v2rayfree', url: 'https://raw.githubusercontent.com/aiboboxx/v2rayfree/main/v2' },
-			{ name: 'Barabama FreeNodes', url: 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/merged.txt' },
-			{ name: 'ermaozi v2ray', url: 'https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/v2ray.txt' },
-			{ name: 'chengaopan Nodes@github', url: 'https://raw.githubusercontent.com/chengaopan/AutoMergePublicNodes/master/list.txt' },
-			{ name: 'chengaopan Nodes@jsdelivr 1', url: 'https://cdn.jsdelivr.us/gh/chengaopan/AutoMergePublicNodes@master/list.txt' },
-			{ name: 'chengaopan Nodes@jsdelivr 2', url: 'https://fastly.jsdelivr.net/gh/chengaopan/AutoMergePublicNodes@master/list.txt' },
-			{ name: 'chengaopan Nodes@jsdelivr 3', url: 'https://testingcf.jsdelivr.net/gh/chengaopan/AutoMergePublicNodes@master/list.txt' },
-			{ name: 'chengaopan Nodes@kkgithub', url: 'https://raw.kkgithub.com/chengaopan/AutoMergePublicNodes/master/list.txt' },
-			{ name: 'chengaopan Nodes@fgit', url: 'https://raw.fgit.cf/chengaopan/AutoMergePublicNodes/master/list.txt' },
-			{ name: 'SSAggregator', url: 'https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge_base64.txt' }
-		];
-
-		async function defaultResponseText(subs_list) {
-			let return_text = 'Here is the list for V2RAY subscription.\n' +
-			'--------------------------------------------\n';
-			subs_list.forEach((element, index) => {
-				return_text += 'id: ' + index + ', ' + element.name + ', ' + element.url + '\n';
-			});
-			return return_text;
-		};
-
-		let default_response = await defaultResponseText(v2ray_subs);
-
+	async fetch(request, env) {	
 		try {
 			let params = new URL(request.url).searchParams;
 
@@ -44,7 +18,7 @@ export default {
 			let int_id = parseInt(id);
 			let subs_item = null;
 			if (int_id.toString() === id) {
-				subs_item = v2ray_subs[int_id];
+				subs_item = env.V2RAY_SUBS[int_id];
 			}
 
 			let subs_response = await fetch(subs_item.url);
@@ -69,8 +43,15 @@ export default {
 				{ headers: headers },
 			);
 		} catch(err) {
-			console.log(err);
-			return new Response(default_response);
+			console.log(`[Caught Exception] No url params or url path not existed, Respond with default html.`);
+			// Opt 1, default html response
+			return new Response(defaultResponseHTML(env.V2RAY_SUBS), {
+				headers: {
+					'Content-Type': 'text/html; charset=UTF-8',
+				}
+			});
+			// Opt 2, default text response
+			// return new Response(defaultResponseText(env.V2RAY_SUBS));
 		};
 	},
 };

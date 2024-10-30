@@ -1,9 +1,9 @@
 {
   "name": "subs",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "scripts": {
-    "deploy": "npm run version:patch && wrangler deploy",
+    "deploy": "wrangler deploy",
     "dev": "wrangler dev",
     "start": "wrangler dev",
     "test": "vitest",
