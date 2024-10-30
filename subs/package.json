@@ -1,10 +1,9 @@
 {
   "name": "subs",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "scripts": {
     "deploy": "wrangler deploy",
-    "dev": "wrangler dev",
     "start": "wrangler dev",
     "test": "vitest",
     "version:minor": "npm version minor --no-commit-hooks --no-git-tag-version",
