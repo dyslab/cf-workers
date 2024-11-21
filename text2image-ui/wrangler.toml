@@ -2,14 +2,14 @@
 # TOML cheatsheet: https://quickref.me/toml.html
 name = "text2image-ui"
 pages_build_output_dir = "dist"
-compatibility_date = "2024-06-15"
+compatibility_date = "2024-11-15"
 
 [env.production]
-compatibility_date = "2024-06-15"
+compatibility_date = "2024-11-15"
 
   [env.production.vars]
-  D1_FILES_LIST_COUNT = "10"
-  D1_FILES_ROWS_LIMIT = "50"
+  D1_FILES_LIST_COUNT = "12"
+  D1_FILES_ROWS_LIMIT = "60"
   FILE_SIZE_LIMIT_BYTES = "1000000"
   SUBS_FILENAME = "subs_url_{id}.{ext}"
   SUBS_FILENAME_MANUAL = "manual/{id}.{ext}"
@@ -35,8 +35,8 @@ compatibility_date = "2024-06-15"
   binding = "DEST_BUCKET"
 
 [vars]
-D1_FILES_LIST_COUNT = "10"
-D1_FILES_ROWS_LIMIT = "50"
+D1_FILES_LIST_COUNT = "12"
+D1_FILES_ROWS_LIMIT = "60"
 FILE_SIZE_LIMIT_BYTES = "1000000"
 SUBS_FILENAME = "subs_url_{id}.{ext}"
 SUBS_FILENAME_MANUAL = "manual/{id}.{ext}"

@@ -1,7 +1,7 @@
 # TOML syntax cheatsheet: https://quickref.me/toml.html
 name = "text2image"
 main = "src/index.js"
-compatibility_date = "2024-06-08"
+compatibility_date = "2024-11-15"
 workers_dev = true
 
 [placement]

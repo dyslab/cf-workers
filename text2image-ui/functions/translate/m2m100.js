@@ -28,10 +28,10 @@ export async function onRequestPost(context) {
       );
       return Response.json(requestJson);
     } else {
-      return new Response(JSON.stringify(`Invalid content type!`));
+      return new Response('Invalid content type!');
     }
   } catch(err) {
     console.log(err);
-    return new Response(JSON.stringify(`Error occured! Message: "${err}"`));
+    return new Response(`Error occured! Message: "${err}"`);
   }
 }

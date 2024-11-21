@@ -51,9 +51,13 @@ const translateAction = async () => {
     const contentType = resp.headers.get("content-type") || "";
     if (contentType.includes("application/json")) {
       const respJson = await resp.json();
-      to_content.value = respJson.to_content;
+      if (respJson.to_content) to_content.value = respJson.to_content;
+      else to_content.value = JSON.stringify(respJson);
+    } else {
+      to_content.value = resp.text();
     }
   } catch(err) {
+    to_content.value = err;
     console.log(err);
   } finally {
     is_translating.value = false;
