@@ -57,8 +57,8 @@ const template_default = {
               'Access-Control-Allow-Origin': '*',
             }
           });
-        } else if (model_id.includes('dreamshaper-8-lcm')) {
-          image_type = 'jpg';
+        } else if (model_id.includes('stable-diffusion-xl-lightning')) {
+          image_type = 'jpeg';
           image_resp = new Response(ai_resp, {
             headers: {
               "content-type": `image/${image_type}`,
@@ -68,23 +68,25 @@ const template_default = {
         } else {
           image_resp = new Response(ai_resp, {
             headers: {
-              "content-type": "image/png",
+              "content-type": `image/${image_type}`,
               'Access-Control-Allow-Origin': '*',
             }
           });
         }
-        if (env.OUTPUT_IMAGE_TO === 'response') {
-          // Response as a image file.
-          return image_resp;
-        } else if (env.OUTPUT_IMAGE_TO === 'bucket') {
-          // Save image file to bucket and response as json object.
-          const file_key = `text2image_${new Date(Date.now()).toISOString()}.${image_type}`;
-          if (image_resp !== null) {
+        if (image_resp === null) {
+          response_json.message += ` [image_resp=${image_resp}] No image returned.`;
+        } else {
+          if (env.OUTPUT_IMAGE_TO === 'bucket') {
+            // Save image file to bucket and response as json object.
+            const file_key = `text2image/${model_id.replaceAll(/\//g,'_')}_${new Date(Date.now()).toISOString()}.${image_type}`;
             const image_file = await env.DEST_BUCKET.put(file_key, await image_resp.blob());
             if (image_file !== null) {
               response_json.imageUrl = `${env.PUBLIC_BUCKET_URL}${file_key}`;
               response_json.message += ` Image saved to ${file_key}.`;  
             }    
+          } else {
+            // Response as an image file when (env.OUTPUT_IMAGE_TO !== 'bucket')
+            return image_resp;
           }
         }
       } catch(err) {
@@ -95,7 +97,7 @@ const template_default = {
       response_json.model_id = model_id;
       return setResponseJson(response_json);
     } else {
-      // console.log(`App unauthorized. Request Data: ${JSON.stringify(request_data)}`); // For debugging
+      console.log(`App unauthorized. Request Data: ${JSON.stringify(request_data)}`); // For debugging
       response_json.statusCode = 401;
       response_json.message = 'Unauthorized.';
       return setResponseJson(response_json);

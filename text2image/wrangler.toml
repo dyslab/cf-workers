@@ -8,7 +8,9 @@ workers_dev = true
 mode = "smart"
 
 [vars]
-# Key 'OUTPUT_IMAGE_TO' optional values: [ 'response', 'bucket' ]
+# In case the key:
+# - OUTPUT_IMAGE_TO = 'bucket'  ---> Save image to r2_buckets
+# - OUTPUT_IMAGE_TO = 'image'   ---> Ouput image to response
 OUTPUT_IMAGE_TO = 'bucket'
 PUBLIC_BUCKET_URL = 'https://pub-53c764ef59cf4a96b33ff4acec6e5b18.r2.dev/'
 

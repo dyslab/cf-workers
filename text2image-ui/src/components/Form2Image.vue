@@ -13,10 +13,11 @@ const models = [
   '@cf/runwayml/stable-diffusion-v1-5-img2img',
   '@cf/runwayml/stable-diffusion-v1-5-inpainting',
 ];
+const default_prompt = 'Space warships are rushing past Jupiter and into deep space, detailed';
 
 let key = ref('');
 let selected_model = ref(models[0]);
-let prompt = ref('cats and dogs are dancing, detailed, 8k');
+let prompt = ref(default_prompt);
 let submit_button_disabled = ref(false);
 let response_image = ref('image/logo.svg');
 const input_image_file_array_data = ref(null);
@@ -60,11 +61,11 @@ const postPrompt = async () => {
         } else {
           key.value = `⛔ Your key "${key.value}" is unauthorized ⛔`;
         }
-      } else if (resp_contentType.includes('png')) {
+      } else if (resp_contentType.includes('image')) {
         fetch_image = true;
       }
       if (fetch_image) {
-        console.log('PNG Image Streaming... Wait please!');
+        console.log('Image Streaming... Wait please!');
         const image_blob = await resp.blob();
         const image_URL = URL.createObjectURL(image_blob);
         response_image.value = image_URL;
