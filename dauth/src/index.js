@@ -19,7 +19,7 @@ export default {
 					}
 				}
 			}
-			console.log(par);
+			console.log(par); // For debugging
 			if (Object.keys(par).indexOf('key') >=0) {
 				for (const key of allow_keys) {
 					if (par['key'].indexOf(key) >= 0) {
@@ -29,19 +29,19 @@ export default {
 					}
 				}
 			}
-			console.log(return_flag);
+			console.log(return_flag); // For debugging
 			return Response.json({
 				statusCode: 200,
 				authorized: return_flag,
 				requestData: par,
 			});	
 		} catch(err) {
-			console.log(err);
-			console.log(return_flag);
 			return Response.json({
 				statusCode: 401,
 				authorized: false,
 				requestData: par,
+				returnFlag: return_flag,
+				message: err,
 			});
 		}
 	},

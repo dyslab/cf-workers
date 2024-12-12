@@ -1,4 +1,4 @@
-var template_default = {
+const template_default = {
   async fetch(request, env) {
     console.log(`Request method: ${request.method}`);
     let request_data = {};
@@ -43,33 +43,59 @@ var template_default = {
           model_id,
           request_data
         );
-        const image_resp = new Response(ai_resp, {
-          headers: {
-            "content-type": "image/png",
-            'Access-Control-Allow-Origin': '*',
-          }
-        });
+        let image_resp = null;
+        let image_type = 'png';
+        if (model_id.includes('flux-1-schnell')) {
+          // Convert from base64 string
+          const binaryString = atob(ai_resp.image);
+          // Create byte representation
+          const img = Uint8Array.from(binaryString, (m) => m.codePointAt(0));
+          image_type = 'jpeg';
+          image_resp = new Response(img, {
+            headers: {
+              "content-type": `image/${image_type}`,
+              'Access-Control-Allow-Origin': '*',
+            }
+          });
+        } else if (model_id.includes('dreamshaper-8-lcm')) {
+          image_type = 'jpg';
+          image_resp = new Response(ai_resp, {
+            headers: {
+              "content-type": `image/${image_type}`,
+              'Access-Control-Allow-Origin': '*',
+            }
+          });
+        } else {
+          image_resp = new Response(ai_resp, {
+            headers: {
+              "content-type": "image/png",
+              'Access-Control-Allow-Origin': '*',
+            }
+          });
+        }
         if (env.OUTPUT_IMAGE_TO === 'response') {
-          // Response as a png file.
+          // Response as a image file.
           return image_resp;
         } else if (env.OUTPUT_IMAGE_TO === 'bucket') {
-          // Response json and save to bucket as a png file.
-          const file_key = `text2image_${new Date(Date.now()).toISOString()}.png`;
-          const pngFile = await env.DEST_BUCKET.put(file_key, await image_resp.blob());
-          if (pngFile !== null) {
-            response_json.imageUrl = `${env.PUBLIC_BUCKET_URL}${file_key}`;
-            response_json.message += ` Image saved to ${file_key}.`;  
-          }  
+          // Save image file to bucket and response as json object.
+          const file_key = `text2image_${new Date(Date.now()).toISOString()}.${image_type}`;
+          if (image_resp !== null) {
+            const image_file = await env.DEST_BUCKET.put(file_key, await image_resp.blob());
+            if (image_file !== null) {
+              response_json.imageUrl = `${env.PUBLIC_BUCKET_URL}${file_key}`;
+              response_json.message += ` Image saved to ${file_key}.`;  
+            }    
+          }
         }
       } catch(err) {
-        console.log(err);
+        console.log(err); // For debugging
         response_json.message += ` Though, exception caught. Error message: ${err}`;
       }
       response_json.statusCode = 200;
       response_json.model_id = model_id;
       return setResponseJson(response_json);
     } else {
-      console.log(`App unauthorized. Request Data: ${JSON.stringify(request_data)}`);
+      // console.log(`App unauthorized. Request Data: ${JSON.stringify(request_data)}`); // For debugging
       response_json.statusCode = 401;
       response_json.message = 'Unauthorized.';
       return setResponseJson(response_json);

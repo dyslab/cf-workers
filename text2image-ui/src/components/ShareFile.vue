@@ -38,18 +38,16 @@ onMounted(async () => {
 
 <template>
   <nav class="panel is-primary">
-    <p class="panel-heading">
-      <div class="is-flex is-flex-direction-row is-justify-content-space-between">
-        <span>
-          Shared Files
+    <div class="panel-heading is-flex is-flex-direction-row is-justify-content-space-between">
+      <span>
+        Shared Files
+      </span>
+      <a href="/upload">
+        <span class="panel-icon has-text-primary-30">
+          <FontAwesomeIcon :icon="faCircleUp" size="lg" />
         </span>
-        <a href="/upload">
-          <span class="panel-icon has-text-primary-30">
-            <FontAwesomeIcon :icon="faCircleUp" size="lg" />
-          </span>
-        </a>
-      </div>
-    </p>
+      </a>
+    </div>
     <a class="panel-block" v-for="file in files_info" :href="getShareFileLink(file.id)" target="_blank">
       <span class="panel-icon">
         <FontAwesomeIcon :icon="faFileLines" size="lg" v-if="file.type.includes('text')" />

@@ -123,12 +123,11 @@ const html_template = `
           <li>The link of raw data 📄 can be used as a v2ray subscription source directly with update proxy setting ON.</li>
           <li>The downloaded file 📥 can be imported to v2ray client as a local config file.</li>
         </ul>
+        <i>&nbsp;&nbsp;This page last updated on 2024-12-13.</i>
       </blockquote>
     </div>
   </body>
-</html>
-`
-
+</html>`;
 
 function defaultResponseText(subs_list) {
   let return_text = 'V2ray Subscription List\n';

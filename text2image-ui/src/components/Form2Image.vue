@@ -7,6 +7,7 @@ import FormFieldImagePicker from './FormFieldImagePicker.vue';
 
 const models = [
   '@cf/lykon/dreamshaper-8-lcm',
+  '@cf/black-forest-labs/flux-1-schnell',
   '@cf/stabilityai/stable-diffusion-xl-base-1.0',
   '@cf/bytedance/stable-diffusion-xl-lightning',
   '@cf/runwayml/stable-diffusion-v1-5-img2img',

@@ -1,17 +1,14 @@
 {
   "name": "subs",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "private": true,
   "scripts": {
-    "deploy": "wrangler deploy",
     "start": "wrangler dev",
-    "test": "vitest",
+    "deploy": "wrangler deploy",
     "version:minor": "npm version minor --no-commit-hooks --no-git-tag-version",
     "version:patch": "npm version patch --no-commit-hooks --no-git-tag-version"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.1.0",
-    "vitest": "1.3.0",
-    "wrangler": "^3.88.0"
+    "wrangler": "^3.95.0"
   }
 }

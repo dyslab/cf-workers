@@ -23,11 +23,12 @@ V2RAY_SUBS = [
   { name = "chengaopan Nodes", url = "https://raw.githubusercontent.com/chengaopan/AutoMergePublicNodes/master/list.txt" },
   { name = "ermaozi v2ray", url = "https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/v2ray.txt" },
   { name = "mfuu", url = "https://raw.githubusercontent.com/mfuu/v2ray/master/v2ray" },
-  { name = "Pawdroid", url = "https://proxy.v2gh.com/https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub" },
+  { name = "Pawdroid", url = "https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub" },
   { name = "SSAggregator", url = "https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge_base64.txt" },
   { name = "Surfboardv2ray Mixed", url = "https://raw.githubusercontent.com/Surfboardv2ray/TGParse/main/splitted/mixed" },
   { name = "V2ray Configs", url = "https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/All_Configs_Sub.txt" },
   { name = "v2rayfree", url = "https://raw.githubusercontent.com/aiboboxx/v2rayfree/main/v2" },
+  { name = "wz2023jd", url = "https://raw.githubusercontent.com/dyslab/jnb-sample/master/v2ray_toolkit/fetch-wz2023jd.txt" },
 ]
 
 # Bind the Workers AI model catalog. Run machine learning models, powered by serverless GPUs, on Cloudflare’s global network
