@@ -127,7 +127,7 @@ const html_template = `
           <li>The link of raw data 📄 can be used as a v2ray subscription source directly with update proxy setting ON.</li>
           <li>The downloaded file 📥 can be imported to v2ray client as a local config file.</li>
         </ul>
-        <i>&nbsp;&nbsp;This page last updated on 2024-12-13.</i>
+        <i>&nbsp;&nbsp;This page last updated on 2025-05-28.</i>
       </blockquote>
     </div>
   </body>
