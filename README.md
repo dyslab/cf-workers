@@ -2,20 +2,29 @@
 
 [![Cloudflare](./assets/cloudflare.svg)](https://dash.cloudflare.com/) &nbsp;[![Vue3](./assets/vue3.svg)](https://vuejs.org/)
 
-Each subfolder of this project connects to a cloudflare worker/page demo.
+## Project Installation
 
-## Cloudflare Workers & Pages Development CLI Tools C3 / Wrangler Installation
-
-> Note:
->
-> To Avoid "network connection failed" or "proxy ..." error occurs while installing cloudflare C3 / Wrangler CLI tools, npm offical registry url <https://registry.npmjs.org> is recomended to be set as default registry.
+Each subfolder of this project connects to a cloudflare worker/page demo. Example:
 
 ```bash
-npm config set registry https://registry.npmjs.org  # Set to the offcial npm registry
+# Go to the specific project folder
+cd ./text2image-ui
 
+# Install project packages
+npm install
+```
+
+## Information about Wrangler installation or upgrade 💭
+
+In order to avoid network issues such as like "network connection failed" or "proxy ..." error occurs, [npm offical registry](https://registry.npmjs.org) is recomended to be set as default registry when installing or upgrading  [Wrangler](https://developers.cloudflare.com/workers/wrangler/) package.
+
+```bash
+# Set to the offcial npm registry
+npm config set registry https://registry.npmjs.org  
 npm install -D wrangler@latest
 
-# or
+OR: 🔄
 
-npm install -D wrangler@latest --registry=https://registry.npmjs.org    # Npm cli with '--registry' parameter
+# Npm cli with '--registry' parameter
+npm install -D wrangler@latest --registry=https://registry.npmjs.org    
 ```

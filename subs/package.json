@@ -9,6 +9,6 @@
     "version:patch": "npm version patch --no-commit-hooks --no-git-tag-version"
   },
   "devDependencies": {
-    "wrangler": "^3.114.9"
+    "wrangler": "^4.45.0"
   }
 }
