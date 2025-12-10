@@ -23,10 +23,10 @@ V2RAY_SUBS = [
   { name = "chengaopan Nodes", url = "https://raw.githubusercontent.com/chengaopan/AutoMergePublicNodes/master/list.txt" },
   { name = "ermaozi v2ray", url = "https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/v2ray.txt" },
   { name = "mfuu", url = "https://raw.githubusercontent.com/mfuu/v2ray/master/v2ray" },
+  { name = "NoMoreWalls", url = "https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list.txt" },
   { name = "Pawdroid", url = "https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub" },
   { name = "SSAggregator", url = "https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge_base64.txt" },
   { name = "Surfboardv2ray Mixed", url = "https://raw.githubusercontent.com/Surfboardv2ray/TGParse/main/splitted/mixed" },
-  { name = "MhdiTaheri (US)", url = "https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/United%20States/config.txt" },
   { name = "v2rayfree", url = "https://raw.githubusercontent.com/aiboboxx/v2rayfree/main/v2" },
   { name = "wz2023jd", url = "https://raw.githubusercontent.com/dyslab/jnb-sample/master/v2ray_toolkit/fetch-wz2023jd.txt" },
 ]
