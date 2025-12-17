@@ -1,6 +1,6 @@
 {
   "name": "subs2bucket",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "private": true,
   "scripts": {
     "start": "wrangler dev --test-scheduled",
@@ -9,6 +9,6 @@
     "version:patch": "npm version patch --no-commit-hooks --no-git-tag-version"
   },
   "devDependencies": {
-    "wrangler": "^4.45.0"
+    "wrangler": "^4.55.0"
   }
 }
